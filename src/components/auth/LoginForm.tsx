@@ -8,9 +8,30 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import {EyeOff,Eye} from "lucide-react";
 import {useState} from "react";
+import {useForm} from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import {loginSchema, type LoginFormData} from "@/lib/validations/auth";
 
 export default function LoginForm() {
     const [showPassword,setShowPassword] = useState(false);
+
+
+    const {register,handleSubmit,formState:{errors},} = 
+      useForm<LoginFormData>({
+        resolver: zodResolver(loginSchema)
+      })
+
+
+      const onSubmit = (data: LoginFormData) => {
+        console.log(data);
+      }
+
+
+
+
+
+
   return (
     <div className="space-y-5">
       <Button
@@ -31,27 +52,49 @@ export default function LoginForm() {
         <Separator className="flex-1" />
       </div>
 
-      <form className="space-y-5">
+      <form 
+          onSubmit={handleSubmit(onSubmit)}
+          className="space-y-5">
         <div className="space-y-2">
           <Label htmlFor="email">Email address</Label>
 
           <Input
             id="email"
-            name="email"
+            // type="email"
             type="email"
-            placeholder="you@example.com"
+            placeholder="kyliejenner@gmail.com"
             autoComplete="email"
+            {...register("email")}
           />
+
+          {errors.email && (
+            <p className="text-xs text-destructive">
+              {errors.email.message}
+            </p>
+          )}
+
+
+
+
+
+
         </div>
 
         <div className="relative">
             <Input 
                 id="password"
-                name="password"
+                // name="password"
                 type={showPassword ? "text" : "password"}
                 placeholder="Enter password"
                 autoComplete="password"
-                className="pr-10"/>
+                className="pr-10"
+                {...register("password")}/>
+
+                {errors.password && (
+                  <p className="text-xs text-destructive">
+                    {errors.password.message}
+                  </p>
+                )}
 
             <button
                 type="button"
