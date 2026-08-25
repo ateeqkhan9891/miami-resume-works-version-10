@@ -18,21 +18,21 @@ export default function DesktopNav() {
     <NavigationMenu>
       <NavigationMenuList>
         <NavigationMenuItem>
-          <NavigationMenuTrigger className="cursor-pointer">
+          <NavigationMenuTrigger className="cursor-pointer text-muted-foreground">
             Resume
           </NavigationMenuTrigger>
           <ResumesMegaMenu />
         </NavigationMenuItem>
 
         <NavigationMenuItem>
-          <NavigationMenuTrigger className="cursor-pointer">
+          <NavigationMenuTrigger className="cursor-pointer text-muted-foreground">
             Cover Letter
           </NavigationMenuTrigger>
           <CoverLettersMegaMenu />
         </NavigationMenuItem>
 
         <NavigationMenuItem>
-          <NavigationMenuTrigger className="cursor-pointer">
+          <NavigationMenuTrigger className="cursor-pointer text-muted-foreground">
             Learning
           </NavigationMenuTrigger>
           <LearningMegaMenu />
@@ -40,7 +40,7 @@ export default function DesktopNav() {
 
         <NavigationMenuItem>
             <NavigationMenuLink href="/pricing" className={navigationMenuTriggerStyle()}>
-              Pricing
+              <span className="text-muted-foreground">Pricing</span>
             </NavigationMenuLink>
         </NavigationMenuItem>
 
