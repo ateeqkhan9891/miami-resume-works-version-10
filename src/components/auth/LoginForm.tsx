@@ -11,10 +11,18 @@ import {useState} from "react";
 import {useForm} from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
+import {signInWithEmail} from "@/services/auth/auth.service";
+
 import {loginSchema, type LoginFormData} from "@/lib/validations/auth";
+
+import {useRouter} from "next/navigation";
 
 export default function LoginForm() {
     const [showPassword,setShowPassword] = useState(false);
+    const [isLoading,setIsLoading] = useState(false);
+    const [error,setError] = useState<string | null>(null);
+
+    const router = useRouter();
 
 
     const {register,handleSubmit,formState:{errors},} = 
@@ -23,8 +31,24 @@ export default function LoginForm() {
       })
 
 
-      const onSubmit = (data: LoginFormData) => {
-        console.log(data);
+      const onSubmit = async (data: LoginFormData) => {
+        setIsLoading(true);
+        setError("");
+
+        try{
+          await signInWithEmail(data.email,data.password)
+
+          router.push("/dashboard")
+          router.refresh();
+          // console.log("LOGIN SUCCESS:", result);
+        }catch(error){
+          // console.error("LOGIN ERROR:", error);
+          setError(
+            error instanceof Error ? error.message : "Unable to sing in.Please try again",
+          );
+        }finally{
+          setIsLoading(false);
+        }
       }
 
 
@@ -111,11 +135,20 @@ export default function LoginForm() {
 
         </div>
 
+        {error && (
+          <p className="rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive">
+            {error}
+          </p>
+        )}
+
         <Button
           type="submit"
           className="w-full cursor-pointer"
+          disabled={isLoading}
         >
-          Sign in
+          {
+            isLoading ? "Signing in..." : "Sign in"
+          }
         </Button>
       </form>
     </div>
