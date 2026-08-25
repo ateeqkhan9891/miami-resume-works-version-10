@@ -39,11 +39,9 @@ export default function DesktopNav() {
         </NavigationMenuItem>
 
         <NavigationMenuItem>
-          <Link href="/pricing" className="cursor-pointer">
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+            <NavigationMenuLink href="/pricing" className={navigationMenuTriggerStyle()}>
               Pricing
             </NavigationMenuLink>
-          </Link>
         </NavigationMenuItem>
 
       </NavigationMenuList>
