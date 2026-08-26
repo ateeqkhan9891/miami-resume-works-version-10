@@ -29,12 +29,16 @@ export default function TemplateShowcase() {
         <div className="mx-auto flex max-w-5xl flex-col items-center gap-14 px-6 lg:px-8">
           <TemplateFeatureGrid />
 
-          <Link
+         <Link
             href="/templates"
-            className="group inline-flex items-center gap-2 text-sm font-medium text-foreground transition-colors hover:text-foreground/80"
+            className="group inline-flex items-center gap-2 text-sm font-medium text-foreground transition-colors"
           >
-            Browse all templates
-            <ArrowRight className="size-4 transition-transform duration-150 group-hover:translate-x-1" />
+            <span className="relative">
+              Browse all templates
+              {/* Smooth Expanding Underline */}
+              <span className="absolute inset-x-0 bottom-0 h-0.5 w-0 bg-foreground transition-all duration-300 ease-out group-hover:w-full" />
+            </span>
+            <ArrowRight className="size-4 transition-transform duration-200 ease-out group-hover:translate-x-1.5" />
           </Link>
         </div>
       </div>

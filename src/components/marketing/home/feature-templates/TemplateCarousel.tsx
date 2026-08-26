@@ -13,14 +13,14 @@ export default function TemplateCarousel() {
   const containerRef = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
 
-  // Triple items to guarantee enough runway for manual and continuous navigation
+ 
   const displayItems = [
     ...TEMPLATE_SHOWCASE_ITEMS,
     ...TEMPLATE_SHOWCASE_ITEMS,
     ...TEMPLATE_SHOWCASE_ITEMS,
   ];
 
-  // Auto-scroll loop using requestAnimationFrame
+ 
   useEffect(() => {
     let animationFrameId: number;
 
