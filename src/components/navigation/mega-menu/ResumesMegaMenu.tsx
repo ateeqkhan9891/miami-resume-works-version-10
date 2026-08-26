@@ -19,15 +19,15 @@ const items = [
     icon: PenLine,
   },
   {
-    title: "Templates",
+    title: "Resume Templates",
     description: "Explore professional designs.",
-    href: "/resume/templates",
+    href: "/resume/resume-templates",
     icon: LayoutTemplate,
   },
   {
-    title: "Examples",
+    title: "Resume Examples",
     description: "Find inspiration for your career.",
-    href: "/resume/examples",
+    href: "/resume/resume-examples",
     icon: GalleryHorizontalEnd,
   },
   {
