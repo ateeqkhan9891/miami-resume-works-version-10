@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import TemplateRenderer from "@/features/templates/components/TemplateRenderer";
 import { SAMPLE_RESUME_DATA } from "@/features/templates/data/sample-resume-data";
+import { SAMPLE_PROFESSIONAL_RESUME_DATA } from "@/features/templates/data/sample-professional-mahira-resume";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -51,6 +52,10 @@ export default function TemplatePreviewDialog({
 
   if (!template) return null;
 
+  let previewData = SAMPLE_RESUME_DATA;
+  if (template.slug === "professional") {
+    previewData = SAMPLE_PROFESSIONAL_RESUME_DATA;
+  }
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
@@ -60,16 +65,16 @@ export default function TemplatePreviewDialog({
           Preview of {template.name || "Resume Template"}
         </DialogTitle>
 
-        {/* Scaled Exact Resume Container (No extra width/height) */}
+        
         <div
           style={{
             width: `${A4_WIDTH * scale}px`,
             height: `${A4_HEIGHT * scale}px`,
           }}
           className="relative shrink-0 select-none shadow-2xl rounded-xs"
-          onClick={(e) => e.stopPropagation()} // Prevents closing when clicking on the resume
+          onClick={(e) => e.stopPropagation()} 
         >
-          {/* Canonical 794x1123 A4 Document Canvas */}
+         
           <div
             style={{
               width: `${A4_WIDTH}px`,
@@ -81,18 +86,18 @@ export default function TemplatePreviewDialog({
           >
             <TemplateRenderer
               template={template}
-              data={SAMPLE_RESUME_DATA}
+              data={previewData}
             />
           </div>
 
           {/* Floating 'Use Template' Pill Button */}
-          <div className="absolute bottom-6 left-1/2 z-30 -translate-x-1/2">
-            <Button
+          <div className="absolute bottom-2 left-1/2 z-30 -translate-x-1/2">
+            {/* <Button
               size="sm"
-              className="h-10 rounded-full bg-emerald-600 px-7 text-xs font-semibold text-white shadow-xl ring-1 ring-white/20 transition-all hover:bg-emerald-500 hover:scale-105 active:scale-95 cursor-pointer"
+              className="h-10  rounded-full bg-emerald-600 px-7 text-xs font-semibold text-white shadow-xl ring-1 ring-white/20 transition-all hover:bg-emerald-500 hover:scale-105 active:scale-95 cursor-pointer"
             >
               Use Template
-            </Button>
+            </Button> */}
           </div>
         </div>
       </DialogContent>

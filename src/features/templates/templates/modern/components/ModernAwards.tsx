@@ -12,51 +12,47 @@ export default function ModernAwards({
 
   return (
     <section>
-      <h2 className="border-b border-cyan-400 pb-1 text-[11px] font-bold uppercase tracking-[0.12em] text-slate-900">
-        Awards & Honors
-      </h2>
+      <div className="mb-3 flex items-center gap-2.5">
+        <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-cyan-50 text-cyan-600">
+          <AwardIcon size={11} strokeWidth={2.2} />
+        </div>
 
-      <div className="mt-3 space-y-3">
+        <h2 className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-900">
+          Awards & Honors
+        </h2>
+
+        <div className="h-px flex-1 bg-cyan-100" />
+      </div>
+
+      <div className="space-y-2.5">
         {awards.map((award) => (
           <article
             key={award.id}
-            className="flex items-start gap-2.5"
+            className="rounded-md border border-cyan-100 bg-cyan-50/40 px-3 py-2"
           >
-            <AwardIcon
-              size={13}
-              strokeWidth={2}
-              className="mt-0.5 shrink-0 text-cyan-600"
-            />
-
-            <div className="min-w-0 flex-1">
-              <h3 className="text-[10.5px] font-bold leading-snug text-slate-900">
+            <div className="flex items-start justify-between gap-3">
+              <h3 className="min-w-0 text-[9.5px] font-bold leading-snug text-slate-900">
                 {award.title}
               </h3>
 
-              {(award.issuer || award.date) && (
-                <div className="mt-0.5 flex items-center gap-1.5 text-[9px] text-slate-500">
-                  {award.issuer && (
-                    <span className="font-medium text-slate-600">
-                      {award.issuer}
-                    </span>
-                  )}
-
-                  {award.issuer && award.date && (
-                    <span>·</span>
-                  )}
-
-                  {award.date && (
-                    <span>{award.date}</span>
-                  )}
-                </div>
-              )}
-
-              {award.description && (
-                <p className="mt-0.5 text-[9.5px] leading-relaxed text-slate-600">
-                  {award.description}
-                </p>
+              {award.date && (
+                <span className="shrink-0 text-[7.5px] font-medium text-cyan-600">
+                  {award.date}
+                </span>
               )}
             </div>
+
+            {award.issuer && (
+              <p className="mt-0.5 text-[8px] font-medium text-slate-500">
+                {award.issuer}
+              </p>
+            )}
+
+            {award.description && (
+              <p className="mt-0.5 text-[8.5px] leading-[1.5] text-slate-600">
+                {award.description}
+              </p>
+            )}
           </article>
         ))}
       </div>

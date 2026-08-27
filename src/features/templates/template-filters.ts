@@ -90,6 +90,7 @@ export const Filters: Filter[] = [
       { id: "intern", label: "Intern", icon: UserPlus },
       { id: "senior", label: "Senior", icon: Award },
       { id: "executive", label: "Executive", icon: Building2 },
+      {id: "mid-level", label: "Mid-Level", icon: Code},
     ],
   },
 
@@ -114,6 +115,8 @@ export const Filters: Filter[] = [
       { id: "sales", label: "Sales", icon: Briefcase },
       { id: "healthcare", label: "Healthcare", icon: Stethoscope },
       { id: "education", label: "Education", icon: GraduationCap },
+      {id: "design", label: "Designer", icon: HeartPulse },
+      {id: "engineering", label: "Engineering", icon: Pipette }
     ],
   },
 

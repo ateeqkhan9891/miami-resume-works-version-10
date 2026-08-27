@@ -12,60 +12,54 @@ export default function ModernEducation({
 
   return (
     <section>
-      <h2 className="border-b border-cyan-400 pb-1 text-[11px] font-bold uppercase tracking-[0.12em] text-slate-900">
-        Education
-      </h2>
+      <div className="mb-3 flex items-center gap-2.5">
+        <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-cyan-50 text-cyan-600">
+          <EducationIcon size={11} strokeWidth={2.2} />
+        </div>
 
-      <div className="mt-3 space-y-4">
+        <h2 className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-900">
+          Education
+        </h2>
+
+        <div className="h-px flex-1 bg-cyan-100" />
+      </div>
+
+      <div className="space-y-4">
         {education.map((item) => (
           <article
             key={item.id}
-            className="flex items-start gap-2.5"
+            className="flex items-start justify-between gap-5"
           >
-            {/* Education Icon */}
-            <EducationIcon
-              size={14}
-              strokeWidth={2}
-              className="mt-0.5 shrink-0 text-cyan-600"
-            />
-
-            <div className="min-w-0 flex-1">
-              {/* Degree */}
-              <h3 className="text-[11px] font-bold leading-snug text-slate-900">
+            <div className="min-w-0">
+              <h3 className="text-[10.5px] font-bold leading-snug text-slate-950">
                 {item.degree}
               </h3>
 
-              {/* School / Location / Period */}
-              <div className="mt-0.5 flex flex-wrap items-center gap-x-1.5 text-[9.5px] text-slate-500">
-                <span className="font-semibold text-cyan-600">
-                  {item.school}
-                </span>
+              <p className="mt-0.5 text-[9.5px] font-semibold text-cyan-600">
+                {item.school}
+              </p>
 
-                {item.location && (
-                  <>
-                    <span>·</span>
-                    <span>{item.location}</span>
-                  </>
-                )}
+              {item.location && (
+                <p className="text-[9px] text-slate-500">
+                  {item.location}
+                </p>
+              )}
 
-                {item.period && (
-                  <>
-                    <span>·</span>
-                    <span>{item.period}</span>
-                  </>
-                )}
-              </div>
-
-              {/* GPA */}
               {item.gpa && (
-                <p className="mt-1 text-[9.5px] text-slate-600">
-                  GPA:{" "}
-                  <span className="font-medium text-slate-700">
+                <p className="mt-1 text-[8.5px] text-slate-500">
+                  GPA{" "}
+                  <span className="font-semibold text-slate-700">
                     {item.gpa}
                   </span>
                 </p>
               )}
             </div>
+
+            {item.period && (
+              <span className="shrink-0 text-[9px] font-medium text-slate-400">
+                {item.period}
+              </span>
+            )}
           </article>
         ))}
       </div>

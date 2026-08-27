@@ -5,23 +5,27 @@ import LoginForm from "@/components/auth/LoginForm";
 export default function LoginPage() {
   return (
     <div>
-      <div className="mb-8">
-        <h1 className="text-3xl font-semibold tracking-tight">
+      {/* Heading */}
+      <div className="mb-7">
+        <h1 className="text-2xl font-semibold tracking-tight text-stone-950">
           Welcome back
         </h1>
 
-        <p className="mt-2 text-sm text-muted-foreground">
+        <p className="mt-2 text-sm leading-6 text-stone-500">
           Sign in to continue to your MiamiResumeWorks account.
         </p>
       </div>
 
-      <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
-        <LoginForm />
-      </div>
+      {/* Form */}
+      <LoginForm />
 
-      <p className="mt-6 text-center text-sm text-muted-foreground">
+      {/* Signup Link */}
+      <p className="mt-7 text-center text-sm text-stone-500">
         Don&apos;t have an account?{" "}
-        <Link href="/signup" className="font-medium text-primary hover:underline">
+        <Link
+          href="/signup"
+          className="font-medium text-emerald-600 transition-colors hover:text-emerald-700 hover:underline"
+        >
           Create one
         </Link>
       </p>

@@ -12,40 +12,39 @@ export default function ModernCertifications({
 
   return (
     <section>
-      <h2 className="border-b border-cyan-400 pb-1 text-[11px] font-bold uppercase tracking-[0.12em] text-slate-900">
-        Courses & Certifications
-      </h2>
+      <div className="mb-3 flex items-center gap-2.5">
+        <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-cyan-50 text-cyan-600">
+          <CertificationIcon size={11} strokeWidth={2.2} />
+        </div>
 
-      <div className="mt-3 space-y-3">
+        <h2 className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-900">
+          Certifications
+        </h2>
+
+        <div className="h-px flex-1 bg-cyan-100" />
+      </div>
+
+      <div className="space-y-2.5">
         {certifications.map((certification) => (
           <article
             key={certification.id}
-            className="flex items-start gap-2.5"
+            className="border-l-2 border-cyan-100 pl-3"
           >
-            {/* Certification Icon */}
-            <CertificationIcon
-              size={14}
-              strokeWidth={2}
-              className="mt-0.5 shrink-0 text-cyan-600"
-            />
+            <h3 className="text-[9.5px] font-bold leading-snug text-slate-900">
+              {certification.name}
+            </h3>
 
-            <div className="min-w-0 flex-1">
-              {/* Certification Name */}
-              <h3 className="text-[10.5px] font-bold leading-snug text-slate-500">
-                {certification.name}
-              </h3>
+            {(certification.issuer || certification.date) && (
+              <p className="mt-0.5 text-[8px] text-slate-500">
+                {certification.issuer}
 
-              {/* Issuer / Date */}
-              {(certification.issuer || certification.date) && (
-                <p className="font-medium text-cyan-600">
-                  {certification.issuer}
+                {certification.issuer && certification.date && (
+                  <span className="mx-1 text-cyan-400">·</span>
+                )}
 
-                  {certification.issuer && certification.date && " · "}
-
-                  {certification.date}
-                </p>
-              )}
-            </div>
+                {certification.date}
+              </p>
+            )}
           </article>
         ))}
       </div>

@@ -14,20 +14,25 @@ export type TemplateLayout =
 export type TemplateExperienceLevel =
   | "entry-level"
   | "intern"
+  | "mid-level"
   | "senior"
   | "executive";
 
 export type TemplateEducationType =
   | "scholarship"
   | "college"
-  | "mba";
+  | "mba"
+  | "mid-level";
 
 export type TemplateJobCategory =
   | "technology"
   | "finance"
   | "sales"
   | "healthcare"
-  | "education";
+  | "education"
+  | "engineering"
+  | "design";
+
 
 export type TemplateFormat =
   | "word"

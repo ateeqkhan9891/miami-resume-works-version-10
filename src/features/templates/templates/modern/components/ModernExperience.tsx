@@ -12,60 +12,60 @@ export default function ModernExperience({
 
   return (
     <section>
-      <h2 className="border-b border-cyan-400 pb-1 text-[11px] font-bold uppercase tracking-[0.12em] text-slate-900">
-        Experience
-      </h2>
+      <div className="mb-3 flex items-center gap-2.5">
+        <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-cyan-50 text-cyan-600">
+          <ExperienceIcon size={11} strokeWidth={2.2} />
+        </div>
 
-      <div className="mt-3 space-y-4">
-        {experience.map((item) => (
+        <h2 className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-900">
+          Experience
+        </h2>
+
+        <div className="h-px flex-1 bg-cyan-100" />
+      </div>
+
+      <div className="space-y-4">
+        {experience.map((item, index) => (
           <article
             key={item.id}
-            className="flex items-start gap-2.5"
+            className="relative flex gap-3"
           >
-            {/* Experience Icon */}
-            <ExperienceIcon
-              size={14}
-              strokeWidth={2}
-              className="mt-0.5 shrink-0 text-cyan-600"
-            />
+            <div className="flex w-5 shrink-0 flex-col items-center">
+              <div className="mt-1 h-2 w-2 rounded-full bg-cyan-500 ring-2 ring-cyan-50" />
+
+              {index < experience.length - 1 && (
+                <div className="mt-1 w-px flex-1 bg-cyan-100" />
+              )}
+            </div>
 
             <div className="min-w-0 flex-1">
-              {/* Role */}
-              <h3 className="text-[11px] font-bold leading-snug text-slate-900">
-                {item.role}
-              </h3>
+              <div className="flex items-start justify-between gap-4">
+                <div className="min-w-0">
+                  <h3 className="text-[11px] font-bold leading-snug text-slate-950">
+                    {item.role}
+                  </h3>
 
-              {/* Company / Location / Period */}
-              <div className="mt-0.5 flex flex-wrap items-center gap-x-1.5 text-[9.5px] text-slate-500">
-                <span className="font-semibold text-cyan-600">
-                  {item.company}
-                </span>
-
-                {item.location && (
-                  <>
-                    <span>·</span>
-                    <span>{item.location}</span>
-                  </>
-                )}
+                  <p className="mt-0.5 text-[9.5px] font-semibold text-cyan-600">
+                    {item.company}
+                    {item.location && ` · ${item.location}`}
+                  </p>
+                </div>
 
                 {item.period && (
-                  <>
-                    <span>·</span>
-                    <span>{item.period}</span>
-                  </>
+                  <span className="shrink-0 text-[8.5px] font-medium text-slate-400">
+                    {item.period}
+                  </span>
                 )}
               </div>
 
-              {/* Highlights */}
               {item.highlights?.length > 0 && (
                 <ul className="mt-1.5 space-y-1">
-                  {item.highlights.map((highlight, index) => (
+                  {item.highlights.map((highlight, highlightIndex) => (
                     <li
-                      key={index}
-                      className="relative pl-3 text-[9.5px] leading-relaxed text-slate-600"
+                      key={highlightIndex}
+                      className="relative pl-3 text-[9.5px] leading-[1.55] text-slate-600"
                     >
-                      <span className="absolute left-0 top-[5px] h-1 w-1 rounded-full bg-cyan-600" />
-
+                      <span className="absolute left-0 top-[5px] h-1 w-1 rounded-full bg-cyan-500" />
                       {highlight}
                     </li>
                   ))}

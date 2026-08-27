@@ -1,4 +1,3 @@
-import type { ResumePreviewData } from "@/types/resume";
 import {
   AtSign,
   Globe,
@@ -6,93 +5,106 @@ import {
   Phone,
 } from "lucide-react";
 
+import type { ResumePreviewData } from "@/types/resume";
+
 interface ModernHeaderProps {
-  profile: ResumePreviewData["profile"] & {
-    avatarUrl?: string;
-  };
+  profile: ResumePreviewData["profile"];
 }
 
 export default function ModernHeader({
   profile,
 }: ModernHeaderProps) {
   return (
-    <header className="flex items-center justify-between gap-8 bg-cyan-50 px-10 py-5 ring-1 ring-cyan-100">
-      {/* Profile Information */}
-      <div className="min-w-0 flex-1">
-        <h1 className="text-[29px] font-extrabold uppercase leading-none tracking-tight text-slate-950">
-          {profile.fullName}
-        </h1>
+    <header className="relative overflow-hidden bg-cyan-50 px-10 py-7">
+      {/* Decorative Accent */}
+      <div className="absolute -right-16 -top-20 h-40 w-40 rounded-full bg-cyan-100/70" />
 
-        <p className="mt-2 text-[13px] font-semibold leading-none text-cyan-600">
-          {profile.headline}
-        </p>
+      <div className="relative flex items-center justify-between gap-8">
+        {/* Identity */}
+        <div className="min-w-0 flex-1">
+          <div className="mb-2 h-1 w-10 rounded-full bg-cyan-500" />
 
-        {/* Contact Information */}
-        <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[9.5px] text-slate-600">
-          {profile.phone && (
-            <div className="flex items-center gap-1.5 whitespace-nowrap">
-              <Phone
-                size={11}
-                strokeWidth={2}
-                className="shrink-0 text-cyan-600"
-              />
+          <h1 className="text-[30px] font-extrabold uppercase leading-none tracking-[-0.02em] text-slate-950">
+            {profile.fullName}
+          </h1>
 
-              <span>{profile.phone}</span>
-            </div>
+          {profile.headline && (
+            <p className="mt-2 text-[13px] font-semibold tracking-wide text-cyan-600">
+              {profile.headline}
+            </p>
           )}
 
-          {profile.email && (
-            <div className="flex items-center gap-1.5 whitespace-nowrap">
-              <AtSign
-                size={11}
-                strokeWidth={2}
-                className="shrink-0 text-cyan-600"
+          {/* Contact Information */}
+          <div className="mt-4 flex max-w-[560px] flex-wrap items-center gap-x-4 gap-y-2 text-[9px] text-slate-600">
+            {profile.phone && (
+              <ContactItem
+                icon={<Phone size={10} strokeWidth={2} />}
+                value={profile.phone}
               />
+            )}
 
-              <span>{profile.email}</span>
-            </div>
-          )}
-
-          {profile.location && (
-            <div className="flex items-center gap-1.5 whitespace-nowrap">
-              <MapPin
-                size={11}
-                strokeWidth={2}
-                className="shrink-0 text-cyan-600"
+            {profile.email && (
+              <ContactItem
+                icon={<AtSign size={10} strokeWidth={2} />}
+                value={profile.email}
               />
+            )}
 
-              <span>{profile.location}</span>
-            </div>
-          )}
-
-          {profile.website && (
-            <div className="flex items-center gap-1.5 whitespace-nowrap">
-              <Globe
-                size={11}
-                strokeWidth={2}
-                className="shrink-0 text-cyan-600"
+            {profile.location && (
+              <ContactItem
+                icon={<MapPin size={10} strokeWidth={2} />}
+                value={profile.location}
               />
+            )}
 
-              <span>{profile.website}</span>
+            {profile.website && (
+              <ContactItem
+                icon={<Globe size={10} strokeWidth={2} />}
+                value={profile.website}
+              />
+            )}
+          </div>
+        </div>
+
+        {/* Profile Image */}
+        <div className="relative shrink-0">
+          <div className="absolute inset-0 rounded-full bg-cyan-300/40 blur-md" />
+
+          {profile.profileImageUrl ? (
+            <img
+              src={profile.profileImageUrl}
+              alt={`${profile.fullName} profile`}
+              className="relative h-28 w-28 rounded-full object-cover ring-4 ring-white shadow-lg"
+            />
+          ) : (
+            <div className="relative flex h-28 w-28 items-center justify-center rounded-full bg-cyan-100 text-cyan-600 ring-4 ring-white shadow-lg">
+              <span className="text-3xl font-bold uppercase">
+                {profile.fullName?.charAt(0) || "U"}
+              </span>
             </div>
           )}
         </div>
       </div>
-
-      {/* Profile Image */}
-      {profile.profileImageUrl ? (
-        <img
-          src={profile.profileImageUrl}
-          alt={`${profile.fullName} profile`}
-          className="h-28 w-28 shrink-0 rounded-full object-cover shadow-sm ring-2 ring-cyan-200"
-        />
-      ) : (
-        <div className="flex h-28 w-28 shrink-0 items-center justify-center rounded-full bg-cyan-100 text-cyan-600 ring-2 ring-cyan-200">
-          <span className="text-3xl font-bold uppercase">
-            {profile.fullName?.charAt(0) || "U"}
-          </span>
-        </div>
-      )}
     </header>
+  );
+}
+
+interface ContactItemProps {
+  icon: React.ReactNode;
+  value: string;
+}
+
+function ContactItem({
+  icon,
+  value,
+}: ContactItemProps) {
+  return (
+    <div className="flex items-center gap-1.5 whitespace-nowrap">
+      <span className="text-cyan-600">
+        {icon}
+      </span>
+
+      <span>{value}</span>
+    </div>
   );
 }
