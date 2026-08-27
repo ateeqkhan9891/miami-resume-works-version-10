@@ -1,11 +1,12 @@
-import { Template } from "@/types/template";
+import type { Template } from "@/types/template";
 
 export const TEMPLATES_DATA: Template[] = [
   {
     id: "miami-modern",
     name: "Miami Modern",
     slug: "miami-modern",
-    description: "Sleek asymmetric header with structured skills grid for tech & engineering.",
+    description:
+      "Sleek asymmetric header with structured skills grid for tech & engineering.",
     thumbnailUrl: "/images/resumes/home/examples/software.jpg",
     fullPreviewUrl: "/images/resumes/home/examples/software.jpg",
     isPopular: true,
@@ -20,11 +21,13 @@ export const TEMPLATES_DATA: Template[] = [
       format: ["pdf", "word"],
     },
   },
+
   {
     id: "creative-folio",
     name: "Creative Folio",
     slug: "creative-folio",
-    description: "Visual portfolio layout with expressive accent panels for designers.",
+    description:
+      "Visual portfolio layout with expressive accent panels for designers.",
     thumbnailUrl: "/images/resumes/designer.jpg",
     fullPreviewUrl: "/images/resumes/designer.jpg",
     isPopular: false,
@@ -39,11 +42,13 @@ export const TEMPLATES_DATA: Template[] = [
       format: ["pdf"],
     },
   },
+
   {
     id: "harvard-classic",
     name: "Harvard Classic",
     slug: "harvard-classic",
-    description: "Traditional single-column serif format preferred by elite universities & finance.",
+    description:
+      "Traditional single-column serif format preferred by elite universities & finance.",
     thumbnailUrl: "/images/resumes/home/examples/business.jpg",
     fullPreviewUrl: "/images/resumes/home/examples/business.jpg",
     isPopular: true,
@@ -58,11 +63,13 @@ export const TEMPLATES_DATA: Template[] = [
       format: ["pdf", "word", "google-docs"],
     },
   },
+
   {
     id: "minimalist-clean",
     name: "Minimalist Clean",
     slug: "minimalist-clean",
-    description: "High-density clean whitespace designed for maximum automated ATS pass rates.",
+    description:
+      "High-density clean whitespace designed for maximum automated ATS pass rates.",
     thumbnailUrl: "/images/resumes/home/examples/techer.jpg",
     fullPreviewUrl: "/images/resumes/home/examples/techer.jpg",
     isPopular: true,
@@ -77,11 +84,13 @@ export const TEMPLATES_DATA: Template[] = [
       format: ["pdf", "word", "google-docs"],
     },
   },
+
   {
     id: "executive-leader",
     name: "Executive Leader",
     slug: "executive-leader",
-    description: "Comprehensive framework showcasing leadership impact and metrics.",
+    description:
+      "Comprehensive framework showcasing leadership impact and metrics.",
     thumbnailUrl: "/images/resumes/home/examples/product-manager.jpg",
     fullPreviewUrl: "/images/resumes/home/examples/product-manager.jpg",
     isPopular: false,
@@ -96,11 +105,13 @@ export const TEMPLATES_DATA: Template[] = [
       format: ["pdf", "word"],
     },
   },
+
   {
     id: "tech-craft",
     name: "Tech Craft",
     slug: "tech-craft",
-    description: "Engineered for software developers with project links and technical stacks.",
+    description:
+      "Engineered for software developers with project links and technical stacks.",
     thumbnailUrl: "/images/resumes/home/examples/data-scientist.jpg",
     fullPreviewUrl: "/images/resumes/home/examples/data-scientist.jpg",
     isPopular: true,
@@ -115,11 +126,13 @@ export const TEMPLATES_DATA: Template[] = [
       format: ["pdf"],
     },
   },
+
   {
     id: "growth-marketing",
     name: "Growth Engine",
     slug: "growth-engine",
-    description: "Metrics-driven layout tailored for campaign managers and growth leads.",
+    description:
+      "Metrics-driven layout tailored for campaign managers and growth leads.",
     thumbnailUrl: "/images/resumes/home/examples/marketing.jpg",
     fullPreviewUrl: "/images/resumes/home/examples/marketing.jpg",
     isPopular: true,
@@ -134,11 +147,13 @@ export const TEMPLATES_DATA: Template[] = [
       format: ["pdf", "word"],
     },
   },
+
   {
-    id: "sales-executive",
+    id: "revenue-closer",
     name: "Revenue Closer",
     slug: "revenue-closer",
-    description: "Quota and achievement-focused structure for sales development and account executives.",
+    description:
+      "Quota and achievement-focused structure for sales development and account executives.",
     thumbnailUrl: "/images/resumes/home/examples/sales.jpg",
     fullPreviewUrl: "/images/resumes/home/examples/sales.jpg",
     isPopular: false,
@@ -153,11 +168,13 @@ export const TEMPLATES_DATA: Template[] = [
       format: ["pdf", "google-docs"],
     },
   },
+
   {
-    id: "structural-engineer",
+    id: "engineering-core",
     name: "Engineering Core",
     slug: "engineering-core",
-    description: "Detailed chronological template highlight certifications, tools, and project scopes.",
+    description:
+      "Detailed chronological template highlighting certifications, tools, and project scopes.",
     thumbnailUrl: "/images/resumes/home/examples/engineer.jpg",
     fullPreviewUrl: "/images/resumes/home/examples/engineer.jpg",
     isPopular: false,
