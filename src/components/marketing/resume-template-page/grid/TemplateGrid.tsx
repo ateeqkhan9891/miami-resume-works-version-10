@@ -3,16 +3,32 @@
 import { useState } from "react";
 
 import { TEMPLATES_DATA } from "@/features/templates/data/templates";
+import {
+  filterTemplates,
+  type SelectedTemplateFilters,
+} from "@/features/templates/utils/filter-templates";
+
 import type { Template } from "@/types/template";
 
 import TemplateCard from "./TemplateCard";
 import TemplatePreviewDialog from "./TemplatePreviewModal";
 
-export default function TemplateGrid() {
+interface TemplateGridProps {
+  selectedFilters: SelectedTemplateFilters;
+}
+
+export default function TemplateGrid({
+  selectedFilters,
+}: TemplateGridProps) {
   const [selectedTemplate, setSelectedTemplate] =
     useState<Template | null>(null);
 
   const [previewOpen, setPreviewOpen] = useState(false);
+
+  const filteredTemplates = filterTemplates(
+    TEMPLATES_DATA,
+    selectedFilters
+  );
 
   function handlePreview(template: Template) {
     setSelectedTemplate(template);
@@ -22,7 +38,7 @@ export default function TemplateGrid() {
   return (
     <>
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {TEMPLATES_DATA.map((template) => (
+        {filteredTemplates.map((template) => (
           <TemplateCard
             key={template.id}
             template={template}

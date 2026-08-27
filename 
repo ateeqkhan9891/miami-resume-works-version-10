@@ -1,0 +1,188 @@
+[1mdiff --git a/src/app/(marketing)/resume/resume-templates/page.tsx b/src/app/(marketing)/resume/resume-templates/page.tsx[m
+[1mindex 2dad580..0e03a2b 100644[m
+[1m--- a/src/app/(marketing)/resume/resume-templates/page.tsx[m
+[1m+++ b/src/app/(marketing)/resume/resume-templates/page.tsx[m
+[36m@@ -9,7 +9,7 @@[m [mexport default function ResumeTemplatesPage(){[m
+         [m
+         <>[m
+             <Hero />[m
+[31m-            <TemplateFilter />[m
+[32m+[m[41m           [m
+             <TemplateSection />[m
+ [m
+         </> [m
+[1mdiff --git a/src/components/marketing/resume-template-page/filters/TemplateFilters.tsx b/src/components/marketing/resume-template-page/filters/TemplateFilters.tsx[m
+[1mindex 35b9d9c..6b3c9e8 100644[m
+[1m--- a/src/components/marketing/resume-template-page/filters/TemplateFilters.tsx[m
+[1m+++ b/src/components/marketing/resume-template-page/filters/TemplateFilters.tsx[m
+[36m@@ -20,39 +20,46 @@[m [mimport {[m
+ [m
+ import { cn } from "@/lib/utils";[m
+ [m
+[31m-export default function TemplateFilters() {[m
+[31m-  const [selectedFilters, setSelectedFilters] = React.useState<[m
+[31m-    Record<string, string[]>[m
+[31m-  >({});[m
+[31m-[m
+[31m-  const toggleFilter = (filterId: string, optionId: string) => {[m
+[31m-    setSelectedFilters((prev) => {[m
+[31m-      const current = prev[filterId] || [];[m
+[31m-[m
+[31m-      const selected = current.includes(optionId);[m
+[31m-[m
+[31m-      const updated = selected[m
+[31m-        ? current.filter((id) => id !== optionId)[m
+[31m-        : [...current, optionId];[m
+[31m-[m
+[31m-      if (updated.length === 0) {[m
+[31m-        const next = { ...prev };[m
+[31m-        delete next[filterId];[m
+[31m-        return next;[m
+[31m-      }[m
+[31m-[m
+[31m-      return {[m
+[31m-        ...prev,[m
+[31m-        [filterId]: updated,[m
+[31m-      };[m
+[31m-    });[m
+[32m+[m[32minterface TemplateFiltersProps {[m
+[32m+[m[32m  selectedFilters: Record<string, string[]>;[m
+[32m+[m[32m  onFiltersChange: ([m
+[32m+[m[32m    filters: Record<string, string[]>[m
+[32m+[m[32m  ) => void;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mexport default function TemplateFilters({[m
+[32m+[m[32m  selectedFilters,[m
+[32m+[m[32m  onFiltersChange,[m
+[32m+[m[32m}: TemplateFiltersProps) {[m
+[32m+[m[32m  const toggleFilter = ([m
+[32m+[m[32m    filterId: string,[m
+[32m+[m[32m    optionId: string[m
+[32m+[m[32m  ) => {[m
+[32m+[m[32m    const current = selectedFilters[filterId] || [];[m
+[32m+[m
+[32m+[m[32m    const selected = current.includes(optionId);[m
+[32m+[m
+[32m+[m[32m    const updated = selected[m
+[32m+[m[32m      ? current.filter((id) => id !== optionId)[m
+[32m+[m[32m      : [...current, optionId];[m
+[32m+[m
+[32m+[m[32m    const next = { ...selectedFilters };[m
+[32m+[m
+[32m+[m[32m    if (updated.length === 0) {[m
+[32m+[m[32m      delete next[filterId];[m
+[32m+[m[32m    } else {[m
+[32m+[m[32m      next[filterId] = updated;[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    onFiltersChange(next);[m
+   };[m
+ [m
+   const clearFilters = () => {[m
+[31m-    setSelectedFilters({});[m
+[32m+[m[32m    onFiltersChange({});[m
+   };[m
+ [m
+[31m-  const activeCount = Object.values(selectedFilters).flat().length;[m
+[32m+[m[32m  const activeCount = Object.values(selectedFilters)[m
+[32m+[m[32m    .flat().length;[m
+ [m
+   return ([m
+     <section className="sticky top-16 z-40 w-full py-3">[m
+[36m@@ -79,6 +86,7 @@[m [mexport default function TemplateFilters() {[m
+               className="group flex cursor-pointer items-center gap-1 rounded-full border border-destructive/20 bg-destructive/10 px-2.5 py-1 text-[11px] font-medium text-destructive transition hover:bg-destructive/20"[m
+             >[m
+               <X className="size-3 transition-transform group-hover:rotate-90" />[m
+[32m+[m
+               Clear all[m
+             </button>[m
+           )}[m
+[36m@@ -87,19 +95,25 @@[m [mexport default function TemplateFilters() {[m
+         {/* Filter Bar */}[m
+         <div className="max-w-full overflow-x-auto rounded-2xl border border-border/80 bg-background/90 p-1 shadow-lg backdrop-blur-xl">[m
+           <div className="flex items-center divide-x divide-border/60">[m
+[32m+[m
+             {Filters.map((filter) => {[m
+               const Icon = filter.icon;[m
+               const options = filter.options || [];[m
+[31m-              const selected = selectedFilters[filter.id] || [];[m
+[32m+[m
+[32m+[m[32m              const selected =[m
+[32m+[m[32m                selectedFilters[filter.id] || [];[m
+[32m+[m
+               const isActive = selected.length > 0;[m
+ [m
+[31m-              /* Simple Button */[m
+[32m+[m[32m              {/* Simple Button */}[m
+               if (options.length === 0) {[m
+                 return ([m
+                   <div key={filter.id} className="px-1">[m
+                     <button[m
+                       type="button"[m
+[31m-                      onClick={() => toggleFilter(filter.id, "active")}[m
+[32m+[m[32m                      onClick={() =>[m
+[32m+[m[32m                        toggleFilter(filter.id, "active")[m
+[32m+[m[32m                      }[m
+                       className={cn([m
+                         "group flex h-9 cursor-pointer items-center gap-2 rounded-xl px-3 text-xs font-medium transition",[m
+                         isActive[m
+[36m@@ -108,13 +122,14 @@[m [mexport default function TemplateFilters() {[m
+                       )}[m
+                     >[m
+                       <Icon className="size-3.5 group-hover:scale-110" />[m
+[32m+[m
+                       {filter.label}[m
+                     </button>[m
+                   </div>[m
+                 );[m
+               }[m
+ [m
+[31m-              /* Dropdown */[m
+[32m+[m[32m              {/* Dropdown */}[m
+               return ([m
+                 <div key={filter.id} className="px-1">[m
+                   <DropdownMenu>[m
+[36m@@ -150,14 +165,20 @@[m [mexport default function TemplateFilters() {[m
+ [m
+                       {options.map((option) => {[m
+                         const OptionIcon = option.icon;[m
+[31m-                        const isSelected = selected.includes(option.id);[m
+[32m+[m
+[32m+[m[32m                        const isSelected =[m
+[32m+[m[32m                          selected.includes(option.id);[m
+ [m
+                         return ([m
+                           <DropdownMenuItem[m
+                             key={option.id}[m
+                             onClick={(e) => {[m
+                               e.preventDefault();[m
+[31m-                              toggleFilter(filter.id, option.id);[m
+[32m+[m
+[32m+[m[32m                              toggleFilter([m
+[32m+[m[32m                                filter.id,[m
+[32m+[m[32m                                option.id[m
+[32m+[m[32m                              );[m
+                             }}[m
+                             className={cn([m
+                               "mt-1 flex cursor-pointer items-center justify-between rounded-xl px-2.5 py-2",[m
+[36m@@ -191,6 +212,7 @@[m [mexport default function TemplateFilters() {[m
+                 </div>[m
+               );[m
+             })}[m
+[32m+[m
+           </div>[m
+         </div>[m
+       </div>[m
+[1mdiff --git a/src/components/marketing/resume-template-page/grid/TemplateGrid.tsx b/src/components/marketing/resume-template-page/grid/TemplateGrid.tsx[m
+[1mindex 07327c5..ccb906f 100644[m
+[1m--- a/src/components/marketing/resume-template-page/grid/TemplateGrid.tsx[m
+[1m+++ b/src/components/marketing/resume-template-page/grid/TemplateGrid.tsx[m
+[36m@@ -3,17 +3,33 @@[m
+ import { useState } from "react";[m
+ [m
+ import { TEMPLATES_DATA } from "@/features/templates/data/templates";[m
+[32m+[m[32mimport {[m
+[32m+[m[32m  filterTemplates,[m
+[32m+[m[32m  type SelectedTemplateFilters,[m
+[32m+[m[32m} from "@/features/templates/utils/fil

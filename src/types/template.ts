@@ -50,7 +50,7 @@ export interface Template {
   description: string;
 
   thumbnailUrl: string;
-  fullPreviewUrl: string;
+
 
   isPopular?: boolean;
   isAtsFriendly?: boolean;

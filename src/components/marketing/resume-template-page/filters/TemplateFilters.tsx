@@ -20,39 +20,46 @@ import {
 
 import { cn } from "@/lib/utils";
 
-export default function TemplateFilters() {
-  const [selectedFilters, setSelectedFilters] = React.useState<
-    Record<string, string[]>
-  >({});
+interface TemplateFiltersProps {
+  selectedFilters: Record<string, string[]>;
+  onFiltersChange: (
+    filters: Record<string, string[]>
+  ) => void;
+}
 
-  const toggleFilter = (filterId: string, optionId: string) => {
-    setSelectedFilters((prev) => {
-      const current = prev[filterId] || [];
+export default function TemplateFilters({
+  selectedFilters,
+  onFiltersChange,
+}: TemplateFiltersProps) {
+  const toggleFilter = (
+    filterId: string,
+    optionId: string
+  ) => {
+    const current = selectedFilters[filterId] || [];
 
-      const selected = current.includes(optionId);
+    const selected = current.includes(optionId);
 
-      const updated = selected
-        ? current.filter((id) => id !== optionId)
-        : [...current, optionId];
+    const updated = selected
+      ? current.filter((id) => id !== optionId)
+      : [...current, optionId];
 
-      if (updated.length === 0) {
-        const next = { ...prev };
-        delete next[filterId];
-        return next;
-      }
+    const next = { ...selectedFilters };
 
-      return {
-        ...prev,
-        [filterId]: updated,
-      };
-    });
+    if (updated.length === 0) {
+      delete next[filterId];
+    } else {
+      next[filterId] = updated;
+    }
+
+    onFiltersChange(next);
   };
 
   const clearFilters = () => {
-    setSelectedFilters({});
+    onFiltersChange({});
   };
 
-  const activeCount = Object.values(selectedFilters).flat().length;
+  const activeCount = Object.values(selectedFilters)
+    .flat().length;
 
   return (
     <section className="sticky top-16 z-40 w-full py-3">
@@ -79,6 +86,7 @@ export default function TemplateFilters() {
               className="group flex cursor-pointer items-center gap-1 rounded-full border border-destructive/20 bg-destructive/10 px-2.5 py-1 text-[11px] font-medium text-destructive transition hover:bg-destructive/20"
             >
               <X className="size-3 transition-transform group-hover:rotate-90" />
+
               Clear all
             </button>
           )}
@@ -87,19 +95,25 @@ export default function TemplateFilters() {
         {/* Filter Bar */}
         <div className="max-w-full overflow-x-auto rounded-2xl border border-border/80 bg-background/90 p-1 shadow-lg backdrop-blur-xl">
           <div className="flex items-center divide-x divide-border/60">
+
             {Filters.map((filter) => {
               const Icon = filter.icon;
               const options = filter.options || [];
-              const selected = selectedFilters[filter.id] || [];
+
+              const selected =
+                selectedFilters[filter.id] || [];
+
               const isActive = selected.length > 0;
 
-              /* Simple Button */
+              {/* Simple Button */}
               if (options.length === 0) {
                 return (
                   <div key={filter.id} className="px-1">
                     <button
                       type="button"
-                      onClick={() => toggleFilter(filter.id, "active")}
+                      onClick={() =>
+                        toggleFilter(filter.id, "active")
+                      }
                       className={cn(
                         "group flex h-9 cursor-pointer items-center gap-2 rounded-xl px-3 text-xs font-medium transition",
                         isActive
@@ -108,13 +122,14 @@ export default function TemplateFilters() {
                       )}
                     >
                       <Icon className="size-3.5 group-hover:scale-110" />
+
                       {filter.label}
                     </button>
                   </div>
                 );
               }
 
-              /* Dropdown */
+              {/* Dropdown */}
               return (
                 <div key={filter.id} className="px-1">
                   <DropdownMenu>
@@ -150,14 +165,20 @@ export default function TemplateFilters() {
 
                       {options.map((option) => {
                         const OptionIcon = option.icon;
-                        const isSelected = selected.includes(option.id);
+
+                        const isSelected =
+                          selected.includes(option.id);
 
                         return (
                           <DropdownMenuItem
                             key={option.id}
                             onClick={(e) => {
                               e.preventDefault();
-                              toggleFilter(filter.id, option.id);
+
+                              toggleFilter(
+                                filter.id,
+                                option.id
+                              );
                             }}
                             className={cn(
                               "mt-1 flex cursor-pointer items-center justify-between rounded-xl px-2.5 py-2",
@@ -191,6 +212,7 @@ export default function TemplateFilters() {
                 </div>
               );
             })}
+
           </div>
         </div>
       </div>

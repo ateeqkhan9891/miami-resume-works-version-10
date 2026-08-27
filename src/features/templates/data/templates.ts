@@ -7,8 +7,8 @@ export const TEMPLATES_DATA: Template[] = [
     slug: "miami-modern",
     description:
       "Sleek asymmetric header with structured skills grid for tech & engineering.",
-    thumbnailUrl: "/images/resumes/home/examples/software.jpg",
-    fullPreviewUrl: "/images/resumes/home/examples/software.jpg",
+    thumbnailUrl: "/images/templates/modern/urooj-modern-resume.png",
+    
     isPopular: true,
     isAtsFriendly: true,
     accentColor: "#4f46e5",
@@ -29,7 +29,7 @@ export const TEMPLATES_DATA: Template[] = [
     description:
       "Visual portfolio layout with expressive accent panels for designers.",
     thumbnailUrl: "/images/resumes/designer.jpg",
-    fullPreviewUrl: "/images/resumes/designer.jpg",
+    
     isPopular: false,
     isAtsFriendly: false,
     accentColor: "#db2777",
@@ -50,7 +50,7 @@ export const TEMPLATES_DATA: Template[] = [
     description:
       "Traditional single-column serif format preferred by elite universities & finance.",
     thumbnailUrl: "/images/resumes/home/examples/business.jpg",
-    fullPreviewUrl: "/images/resumes/home/examples/business.jpg",
+   
     isPopular: true,
     isAtsFriendly: true,
     accentColor: "#0f172a",
@@ -71,7 +71,7 @@ export const TEMPLATES_DATA: Template[] = [
     description:
       "High-density clean whitespace designed for maximum automated ATS pass rates.",
     thumbnailUrl: "/images/resumes/home/examples/techer.jpg",
-    fullPreviewUrl: "/images/resumes/home/examples/techer.jpg",
+  
     isPopular: true,
     isAtsFriendly: true,
     accentColor: "#059669",
@@ -92,7 +92,6 @@ export const TEMPLATES_DATA: Template[] = [
     description:
       "Comprehensive framework showcasing leadership impact and metrics.",
     thumbnailUrl: "/images/resumes/home/examples/product-manager.jpg",
-    fullPreviewUrl: "/images/resumes/home/examples/product-manager.jpg",
     isPopular: false,
     isAtsFriendly: true,
     accentColor: "#0369a1",
@@ -113,7 +112,6 @@ export const TEMPLATES_DATA: Template[] = [
     description:
       "Engineered for software developers with project links and technical stacks.",
     thumbnailUrl: "/images/resumes/home/examples/data-scientist.jpg",
-    fullPreviewUrl: "/images/resumes/home/examples/data-scientist.jpg",
     isPopular: true,
     isAtsFriendly: true,
     accentColor: "#7c3aed",
@@ -134,7 +132,6 @@ export const TEMPLATES_DATA: Template[] = [
     description:
       "Metrics-driven layout tailored for campaign managers and growth leads.",
     thumbnailUrl: "/images/resumes/home/examples/marketing.jpg",
-    fullPreviewUrl: "/images/resumes/home/examples/marketing.jpg",
     isPopular: true,
     isAtsFriendly: true,
     accentColor: "#ea580c",
@@ -155,7 +152,6 @@ export const TEMPLATES_DATA: Template[] = [
     description:
       "Quota and achievement-focused structure for sales development and account executives.",
     thumbnailUrl: "/images/resumes/home/examples/sales.jpg",
-    fullPreviewUrl: "/images/resumes/home/examples/sales.jpg",
     isPopular: false,
     isAtsFriendly: true,
     accentColor: "#16a34a",
@@ -176,7 +172,6 @@ export const TEMPLATES_DATA: Template[] = [
     description:
       "Detailed chronological template highlighting certifications, tools, and project scopes.",
     thumbnailUrl: "/images/resumes/home/examples/engineer.jpg",
-    fullPreviewUrl: "/images/resumes/home/examples/engineer.jpg",
     isPopular: false,
     isAtsFriendly: true,
     accentColor: "#0284c7",
