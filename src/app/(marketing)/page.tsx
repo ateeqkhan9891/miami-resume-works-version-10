@@ -1,4 +1,4 @@
-import Hero from "@/components/marketing/home/Hero";
+import Hero from "@/components/marketing/home/hero/Hero";
 import TemplateShowcase from "@/components/marketing/home/feature-templates/TemplateShowcase";
 import ResumeStats from "@/components/marketing/home/resume-stats/ResumeStats";
 import AtsSection from "@/components/marketing/home/ats/AtsSection";

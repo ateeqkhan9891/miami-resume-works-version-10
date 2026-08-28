@@ -1,6 +1,9 @@
 import HeroContent from "./HeroContent";
-import HeroResumeShowcase from "./HeroResumeShowcase";
+import HeroResumeShowcase from "./HeroResumeShowcaseLoader";
 import HeroSocialProof from "./HeroSocialProof";
+import TrustedCompaniesMarquee from "./Marquee";
+
+
 
 export default function Hero() {
   return (
@@ -36,6 +39,7 @@ export default function Hero() {
           </div>
         </div>
       </div>
+       <TrustedCompaniesMarquee />
     </section>
   );
 }

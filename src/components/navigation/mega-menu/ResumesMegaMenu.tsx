@@ -4,6 +4,7 @@ import {
   GalleryHorizontalEnd,
   LayoutTemplate,
   PenLine,
+  ArrowRight,
 } from "lucide-react";
 
 import {
@@ -41,38 +42,48 @@ const items = [
 export default function ResumesMegaMenu() {
   return (
     <NavigationMenuContent>
-      <div className="w-[680px] rounded-2xl border border-border bg-popover p-7 shadow-xl">
-        <div className="grid grid-cols-[0.8fr_1.2fr] gap-10">
-          <div>
-            <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-primary">
-              Resumes
-            </p>
+      <div className="w-[700px] overflow-hidden rounded-2xl border border-border bg-popover shadow-xl">
+        <div className="grid grid-cols-[0.85fr_1.15fr]">
+          {/* Left panel — brand/intro, subtly differentiated background */}
+          <div className="relative flex flex-col justify-between overflow-hidden border-r border-border bg-muted/40 p-8">
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute -left-10 -top-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"
+            />
 
-            <h3 className="mt-3 text-2xl font-semibold tracking-tight">
-              Build a resume
-              <br />
-              you're proud of.
-            </h3>
+            <div className="relative">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-primary">
+                Resumes
+              </p>
 
-            <p className="mt-3 max-w-[230px] text-sm leading-6 text-muted-foreground">
-              Create a polished resume with professional tools and thoughtfully
-              designed templates.
-            </p>
+              <h3 className="mt-3 text-2xl font-semibold leading-tight tracking-tight text-foreground">
+                Build a resume
+                <br />
+                you&apos;re proud of.
+              </h3>
+
+              <p className="mt-3 max-w-[230px] text-sm leading-6 text-muted-foreground">
+                Professional tools and thoughtfully designed templates —
+                built for the way hiring actually works.
+              </p>
+            </div>
 
             <Link
               href="/resume/ai-resume-builder"
-              className="mt-6 inline-flex cursor-pointer items-center gap-2 text-sm font-semibold text-primary hover:text-primary/80"
+              className="group relative mt-6 inline-flex w-fit items-center gap-2 rounded-lg bg-foreground px-4 py-2.5 text-sm font-semibold text-background transition-colors hover:bg-foreground/90"
             >
-              Create your resume →
+              Create your resume
+              <ArrowRight className="size-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
             </Link>
           </div>
 
-          <div>
-            <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+          {/* Right panel — explore links */}
+          <div className="p-5">
+            <p className="mb-1 px-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
               Explore
             </p>
 
-            <div className="divide-y divide-border">
+            <div className="flex flex-col">
               {items.map((item) => {
                 const Icon = item.icon;
 
@@ -80,20 +91,22 @@ export default function ResumesMegaMenu() {
                   <NavigationMenuLink
                     key={item.title}
                     href={item.href}
-                    className="group flex cursor-pointer items-center gap-4 py-3.5"
+                    className="group flex cursor-pointer items-center gap-3.5 rounded-xl p-3 transition-colors hover:bg-muted"
                   >
-                    <Icon className="size-[18px] text-muted-foreground transition-colors group-hover:text-primary" />
+                    <span className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-border bg-background text-muted-foreground transition-colors group-hover:border-primary/30 group-hover:bg-primary/10 group-hover:text-primary">
+                      <Icon className="size-[17px]" />
+                    </span>
 
-                    <div>
-                      <p className="text-sm font-medium">{item.title}</p>
-                      <p className="mt-0.5 text-xs text-muted-foreground">
+                    <div className="min-w-0">
+                      <p className="text-sm font-medium text-foreground">
+                        {item.title}
+                      </p>
+                      <p className="mt-0.5 truncate text-xs text-muted-foreground">
                         {item.description}
                       </p>
                     </div>
 
-                    <span className="ml-auto opacity-0 transition-opacity group-hover:opacity-100">
-                      →
-                    </span>
+                    <ArrowRight className="ml-auto size-3.5 shrink-0 text-muted-foreground opacity-0 transition-all duration-200 group-hover:translate-x-0.5 group-hover:opacity-100" />
                   </NavigationMenuLink>
                 );
               })}
