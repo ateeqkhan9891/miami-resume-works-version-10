@@ -8,6 +8,7 @@ import ResumeCanvas from "./resume-canvas/ResumeCanvas";
 import RearrangeDialog from "./dialogs/RearrangeDialog";
 import TailorOnboardingModal from "./dialogs/TailorOnboardingModal";
 import ImportResumeModal from "./dialogs/ImportResumeModal";
+import AuthModal from "@/features/auth/components/AuthModal";
 import { TEMPLATES_DATA } from "@/features/templates/data/templates";
 import type { Template } from "@/types/template";
 import type { ActivePanelType } from "../../types/workspace-panels";
@@ -19,30 +20,29 @@ export default function ResumeWorkspace() {
   const [isRearrangeOpen, setIsRearrangeOpen] = useState(false);
   const [isTailorModalOpen, setIsTailorModalOpen] = useState(false);
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
-  const [targetJob, setTargetJob] = useState<TargetJobData | null>(null);
 
+  // Auth Modal State
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authMode, setAuthMode] = useState<"signin" | "signup">("signin");
+  const [currentUser, setCurrentUser] = useState<{ name: string; email: string } | null>(null);
+
+  const [targetJob, setTargetJob] = useState<TargetJobData | null>(null);
   const [saveStatus, setSaveStatus] = useState<SaveStatusType>("saved");
   const [documentTitle, setDocumentTitle] = useState("Software Engineer Resume");
   const [currentTemplate, setCurrentTemplate] = useState<Template>(TEMPLATES_DATA[0]);
 
-  // Tailor Toolbar action routing
+  // Auth Handlers
+  const handleOpenAuth = (mode: "signin" | "signup") => {
+    setAuthMode(mode);
+    setIsAuthModalOpen(true);
+  };
+
+  // Tailor Toolbar Action
   const handleTailorToolbarClick = () => {
     if (!targetJob) {
       setIsTailorModalOpen(true);
     } else {
       setActivePanel(activePanel === "tailor-job" ? null : "tailor-job");
-    }
-  };
-
-  // ATS check jump-to-section navigator
-  const handleNavigateToSection = (sectionId: string) => {
-    const element = document.getElementById(`resume-section-${sectionId}`);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth", block: "center" });
-      element.classList.add("ring-2", "ring-primary", "transition-all");
-      setTimeout(() => {
-        element.classList.remove("ring-2", "ring-primary");
-      }, 1500);
     }
   };
 
@@ -53,25 +53,28 @@ export default function ResumeWorkspace() {
   };
 
   // Resume document import completion callback
-  const handleImportComplete = (parsedData: any) => {
+  const handleImportComplete = () => {
     setSaveStatus("saving");
     setTimeout(() => {
       setSaveStatus("saved");
-    }, 800);
+    }, 600);
   };
 
   return (
     <div className="relative flex h-screen w-full flex-col overflow-hidden bg-background">
-      {/* 1. Global Navigation Top Header */}
+      {/* 1. Global Navigation Top Header with Auth Triggers */}
       <WorkspaceTopHeader
         saveStatus={saveStatus}
         documentTitle={documentTitle}
         onTitleChange={setDocumentTitle}
         onUploadClick={() => setIsImportModalOpen(true)}
-        onHelpClick={() => console.log("Help modal triggered")}
+        onHelpClick={() => console.log("Help trigger")}
+        onLoginClick={() => handleOpenAuth("signin")}
+        onSignUpClick={() => handleOpenAuth("signup")}
+        user={currentUser}
       />
 
-      {/* 2. Editor Toolbar */}
+      {/* 2. Editor Sub-Toolbar */}
       <EditorToolbar
         activePanel={activePanel}
         onTogglePanel={setActivePanel}
@@ -93,7 +96,7 @@ export default function ResumeWorkspace() {
         <ResumeCanvas currentTemplate={currentTemplate} />
       </div>
 
-      {/* 4. Centered Modals & Dialogs */}
+      {/* 4. Dialogs & Modals */}
       <RearrangeDialog
         open={isRearrangeOpen}
         onOpenChange={setIsRearrangeOpen}
@@ -109,6 +112,13 @@ export default function ResumeWorkspace() {
         open={isImportModalOpen}
         onOpenChange={setIsImportModalOpen}
         onImportComplete={handleImportComplete}
+      />
+
+      {/* 5. Auth Modal */}
+      <AuthModal
+        open={isAuthModalOpen}
+        onOpenChange={setIsAuthModalOpen}
+        defaultMode={authMode}
       />
     </div>
   );

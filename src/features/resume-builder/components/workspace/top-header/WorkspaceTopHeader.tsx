@@ -66,6 +66,7 @@ export default function WorkspaceTopHeader({
               <Button
                 variant="ghost"
                 size="icon"
+                type="button"
                 onClick={handleTitleSubmit}
                 className="h-6 w-6 rounded-md text-primary hover:bg-accent/40"
               >
@@ -74,6 +75,7 @@ export default function WorkspaceTopHeader({
             </div>
           ) : (
             <button
+              type="button"
               onClick={() => setIsEditingTitle(true)}
               className="group flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium text-foreground transition-colors hover:bg-muted"
             >
@@ -94,6 +96,7 @@ export default function WorkspaceTopHeader({
         <Button
           variant="ghost"
           size="sm"
+          type="button"
           onClick={onHelpClick}
           className="h-8 gap-1.5 rounded-lg px-2.5 text-xs font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
         >
@@ -104,6 +107,7 @@ export default function WorkspaceTopHeader({
         <Button
           variant="outline"
           size="sm"
+          type="button"
           onClick={onUploadClick}
           className="h-8 gap-1.5 rounded-lg border-border bg-card text-xs font-medium text-foreground shadow-none transition-colors hover:bg-muted"
         >
@@ -124,6 +128,7 @@ export default function WorkspaceTopHeader({
             <Button
               variant="ghost"
               size="sm"
+              type="button"
               onClick={onLoginClick}
               className="h-8 rounded-lg px-3 text-xs font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
             >
@@ -132,6 +137,7 @@ export default function WorkspaceTopHeader({
 
             <Button
               size="sm"
+              type="button"
               onClick={onSignUpClick}
               className="h-8 rounded-lg bg-primary px-3 text-xs font-medium text-primary-foreground shadow-xs transition-all hover:opacity-95 active:scale-95"
             >
