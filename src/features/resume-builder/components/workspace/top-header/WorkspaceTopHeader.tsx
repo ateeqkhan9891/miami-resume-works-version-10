@@ -1,9 +1,26 @@
 "use client";
 
 import { useState } from "react";
-import Logo from "@/components/navigation/Logo";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { HelpCircle, UploadCloud, Check, Pencil } from "lucide-react";
+import {
+  HelpCircle,
+  UploadCloud,
+  Check,
+  Pencil,
+  ChevronDown,
+  CircleGauge ,
+  Infinity,
+} from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import SaveStatus, { type SaveStatusType } from "./SaveStatus";
 
 interface WorkspaceTopHeaderProps {
@@ -14,7 +31,7 @@ interface WorkspaceTopHeaderProps {
   onHelpClick?: () => void;
   onLoginClick?: () => void;
   onSignUpClick?: () => void;
-  user?: { name: string; email: string } | null;
+  user?: { name: string; email: string; role?: "admin" | "user" } | null;
 }
 
 export default function WorkspaceTopHeader({
@@ -39,11 +56,47 @@ export default function WorkspaceTopHeader({
 
   return (
     <header className="flex h-14 w-full shrink-0 items-center justify-between border-b border-border bg-card px-4">
-      {/* Left Segment: Branding, Document Title & Save Status */}
+      {/* Left Segment: Logo, Gap, Workspace Trigger, Resume Title & Save Status */}
       <div className="flex items-center gap-3">
-        <div className="flex items-center gap-3">
-          <Logo />
-        </div>
+        {/* Logo */}
+        <Link
+          href="/"
+          className="flex size-8 items-center justify-center rounded-lg border border-primary/20 bg-primary/10 text-primary transition-transform duration-200 hover:scale-105"
+        >
+          <Infinity className="size-4.5" strokeWidth={2.4} />
+        </Link>
+
+        {/* Workspace Dropdown without asChild */}
+        <DropdownMenu>
+          <DropdownMenuTrigger className="group flex items-center gap-1.5 rounded-lg border border-border bg-muted/40 px-2.5 py-1 text-xs font-medium text-foreground outline-none transition-colors hover:bg-muted focus-visible:ring-1 focus-visible:ring-primary">
+            <span>Workspace</span>
+            <ChevronDown className="h-3 w-3 text-muted-foreground transition-transform duration-200 group-data-[state=open]:rotate-180" />
+          </DropdownMenuTrigger>
+
+          <DropdownMenuContent
+            align="start"
+            sideOffset={8}
+            className="w-48 rounded-xl border border-border bg-card p-1.5 shadow-xl"
+          >
+            <DropdownMenuGroup>
+              <DropdownMenuLabel className="px-2 py-1 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+                Workspace
+              </DropdownMenuLabel>
+
+              <DropdownMenuSeparator className="my-1 bg-border" />
+
+              <DropdownMenuItem className="p-0">
+                <Link
+                  href="/dashboard"
+                  className="flex w-full cursor-pointer items-center gap-2.5 rounded-lg px-2.5 py-2 text-xs font-medium text-foreground transition hover:bg-muted"
+                >
+                  <CircleGauge  className="h-3.5 w-3.5 text-primary" />
+                  <span>Dashboard</span>
+                </Link>
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
 
         <div className="h-4 w-px bg-border" />
 
@@ -87,7 +140,7 @@ export default function WorkspaceTopHeader({
 
         <div className="h-4 w-px bg-border" />
 
-        {/* Dynamic Save Status Indicator */}
+        {/* Dynamic Save Status */}
         <SaveStatus status={saveStatus} />
       </div>
 
