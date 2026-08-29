@@ -1,73 +1,57 @@
+// src/components/marketing/home/feature-templates/TemplateShowcaseHeader.tsx
 "use client";
 
 import { motion } from "framer-motion";
-import { FileText, Sparkles } from "lucide-react";
+import { Sparkles, FileText, CheckCircle2 } from "lucide-react";
 
 export default function TemplateShowcaseHeader() {
   return (
-    <div className="relative mx-auto max-w-5xl text-center">
-      <motion.div
-        aria-hidden="true"
-        animate={{
-          y: [0, -10, 0],
-          rotate: [0, 8, 0],
-        }}
-        transition={{
-          duration: 6,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-        className="pointer-events-none absolute -left-12 top-1/2 -z-10 -translate-y-1/2 opacity-70 blur-[1px] sm:-left-20"
-      >
-        <div className="size-0 border-b-[42px] border-l-[24px] border-r-[24px] border-b-violet-500/30 border-l-transparent border-r-transparent drop-shadow-[0_0_20px_rgba(139,92,246,0.3)]" />
-      </motion.div>
-
-      <motion.div
-        aria-hidden="true"
-        animate={{
-          y: [0, 10, 0],
-          rotate: [12, 28, 12],
-        }}
-        transition={{
-          duration: 7,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-        className="pointer-events-none absolute -right-8 -top-6 -z-10 size-10 rounded-xl bg-gradient-to-br from-amber-400/30 to-rose-400/30 opacity-70 blur-[1px] drop-shadow-[0_0_20px_rgba(251,191,36,0.25)] sm:-right-16"
+    <div className="relative mx-auto max-w-4xl text-center">
+      {/* Decorative ambient glow */}
+      <div 
+        aria-hidden="true" 
+        className="pointer-events-none absolute left-1/2 -top-12 -z-10 h-36 w-80 -translate-x-1/2 rounded-full bg-primary/10 blur-3xl" 
       />
 
+      {/* Badge */}
       <motion.div
-        initial={{ opacity: 0, y: 8 }}
+        initial={{ opacity: 0, y: 10 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5, ease: "easeOut" }}
-        className="inline-flex items-center gap-1.5 rounded-full border border-violet-500/20 bg-violet-500/[0.08] px-3.5 py-1 text-xs font-medium tracking-wide text-violet-600 dark:text-violet-400"
+        className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3.5 py-1 text-xs font-semibold text-foreground shadow-2xs"
       >
-        <FileText className="size-3 text-violet-500" />
-        <span>Curated Templates</span>
+        <span className="size-1.5 rounded-full bg-primary animate-pulse" />
+        <span>ATS-Engineered Templates</span>
       </motion.div>
 
+      {/* Main Heading */}
       <motion.h2
-        initial={{ opacity: 0, y: 12 }}
+        initial={{ opacity: 0, y: 14 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
-        className="mt-4 whitespace-nowrap text-3xl font-semibold tracking-tight text-foreground sm:text-4xl lg:text-5xl"
+        className="mt-5 text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl lg:text-5xl"
       >
-        Designed to make a strong{" "}
-       <span className="inline-block rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-emerald-600 dark:border-emerald-500/40 dark:bg-emerald-500/15 dark:text-emerald-400">
-        first impression
-      </span>
+        Designed to get noticed by{" "}
+        <span className="relative inline-block text-primary">
+          top recruiters
+          <span 
+            aria-hidden="true" 
+            className="absolute -bottom-1 left-0 h-1 w-full rounded-full bg-accent-warm/40" 
+          />
+        </span>
       </motion.h2>
 
+      {/* Subtitle */}
       <motion.p
-        initial={{ opacity: 0, y: 12 }}
+        initial={{ opacity: 0, y: 14 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-        className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base lg:text-lg"
+        className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base font-medium"
       >
-        Choose from thoughtfully crafted layouts calibrated for readability, ATS compatibility, and executive polish.
+        Built with clean typographic grids, measured hierarchy, and validated ATS parsing structures that pass corporate screens.
       </motion.p>
     </div>
   );

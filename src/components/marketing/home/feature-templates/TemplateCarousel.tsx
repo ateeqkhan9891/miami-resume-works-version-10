@@ -1,35 +1,46 @@
+// src/components/marketing/home/feature-templates/TemplateCarousel.tsx
 "use client";
 
 import { motion, useMotionValue } from "framer-motion";
-import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  ArrowUpRight,
+  Eye,
+  ShieldCheck,
+  Sparkles,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-
-import { TEMPLATE_SHOWCASE_ITEMS } from "./template-showcase-data";
+import { TEMPLATES_DATA } from "@/features/templates/data/templates";
+import type { Template } from "@/types/template";
+import TemplatePreviewModal from "./TemplatePreviewModal";
 
 export default function TemplateCarousel() {
   const [isPaused, setIsPaused] = useState(false);
+  const [selectedTemplate, setSelectedTemplate] = useState<Template | null>(null);
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+
   const containerRef = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
 
- 
+  // Triple repeat ensures an infinite, gapless scrolling loop
   const displayItems = [
-    ...TEMPLATE_SHOWCASE_ITEMS,
-    ...TEMPLATE_SHOWCASE_ITEMS,
-    ...TEMPLATE_SHOWCASE_ITEMS,
+    ...TEMPLATES_DATA,
+    ...TEMPLATES_DATA,
+    ...TEMPLATES_DATA,
+    ...TEMPLATES_DATA,
   ];
 
- 
   useEffect(() => {
     let animationFrameId: number;
 
     const loop = () => {
       if (!isPaused && containerRef.current) {
-        const halfWidth = containerRef.current.scrollWidth / 3;
-        let currentX = x.get() - 0.75; // Auto-scroll speed
+        const halfWidth = containerRef.current.scrollWidth / 2;
+        let currentX = x.get() - 0.7; // Smooth auto-scroll speed
 
-        // Seamless wrap around
         if (Math.abs(currentX) >= halfWidth) {
           currentX = 0;
         }
@@ -42,11 +53,10 @@ export default function TemplateCarousel() {
     return () => cancelAnimationFrame(animationFrameId);
   }, [isPaused, x]);
 
-  // Handle Manual Arrow Step Navigation
   const handleScroll = (direction: "left" | "right") => {
     if (!containerRef.current) return;
-    const step = 340; // Approx item width + gap
-    const halfWidth = containerRef.current.scrollWidth / 3;
+    const step = 340;
+    const halfWidth = containerRef.current.scrollWidth / 2;
     let targetX = direction === "left" ? x.get() + step : x.get() - step;
 
     if (targetX > 0) {
@@ -58,74 +68,129 @@ export default function TemplateCarousel() {
     x.set(targetX);
   };
 
+  const openPreview = (template: Template) => {
+    setSelectedTemplate(template);
+    setIsPreviewOpen(true);
+  };
+
   return (
-    /* 1. Entire Carousel Background Wrapper */
-    <div
-      className="group/carousel relative mx-auto w-full max-w-7xl overflow-hidden rounded-3xl border border-border/40 bg-muted/20 py-10 shadow-sm backdrop-blur-sm sm:py-12"
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
-    >
-      {/* Left Navigation Arrow */}
-      <button
-        type="button"
-        aria-label="Previous templates"
-        onClick={() => handleScroll("left")}
-        className="absolute cursor-pointer left-4 top-1/2 z-20 flex size-10 -translate-y-1/2 items-center justify-center rounded-full border border-border/80 bg-background/90 text-foreground shadow-lg backdrop-blur-sm transition-all duration-200 hover:scale-110 hover:bg-background sm:left-8"
+    <>
+      <div
+        className="group/carousel relative w-full overflow-hidden py-4"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
       >
-        <ArrowLeft className="size-4" />
-      </button>
+        {/* Left & Right Vignette Gradients */}
+        <div 
+          aria-hidden="true" 
+          className="pointer-events-none absolute left-0 top-0 z-20 h-full w-20 bg-gradient-to-r from-background to-transparent sm:w-36" 
+        />
+        <div 
+          aria-hidden="true" 
+          className="pointer-events-none absolute right-0 top-0 z-20 h-full w-20 bg-gradient-to-l from-background to-transparent sm:w-36" 
+        />
 
-      {/* Right Navigation Arrow */}
-      <button
-        type="button"
-        aria-label="Next templates"
-        onClick={() => handleScroll("right")}
-        className="absolute cursor-pointer right-4 top-1/2 z-20 flex size-10 -translate-y-1/2 items-center justify-center rounded-full border border-border/80 bg-background/90 text-foreground shadow-lg backdrop-blur-sm transition-all duration-200 hover:scale-110 hover:bg-background sm:right-8"
-      >
-        <ArrowRight className="size-4" />
-      </button>
+        {/* Floating Direction Controls */}
+        <button
+          type="button"
+          aria-label="Previous template"
+          onClick={() => handleScroll("left")}
+          className="absolute left-6 top-1/2 z-30 flex size-11 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-border bg-card/95 text-foreground shadow-lg backdrop-blur-md transition-all hover:scale-110 hover:border-primary/40 active:scale-95"
+        >
+          <ArrowLeft className="size-4.5" />
+        </button>
 
-      {/* Carousel Track */}
-      <motion.div
-        ref={containerRef}
-        style={{ x }}
-        className="flex w-max gap-6 px-4 sm:gap-8 lg:gap-10"
-      >
-        {displayItems.map((item, index) => (
-          <div
-            key={`${item.id}-${index}`}
-            className="group relative w-[240px] flex-none sm:w-[280px] lg:w-[320px]"
-          >
-            {/* 2. Individual Resume Card Wrapper */}
-            <div className="relative cursor-pointer aspect-[210/297] w-full overflow-hidden rounded-xl border border-border/60 bg-background/90 p-2.5 shadow-sm transition-all duration-300 ease-out group-hover:-translate-y-2 group-hover:border-border group-hover:shadow-xl dark:bg-card/80">
-              <div className="relative h-full w-full overflow-hidden rounded-lg bg-background">
-                <Image
-                  src={item.image}
-                  alt={item.name}
-                  fill
-                  sizes="(max-width: 640px) 240px, (max-width: 1024px) 280px, 320px"
-                  className="object-contain"
-                />
+        <button
+          type="button"
+          aria-label="Next template"
+          onClick={() => handleScroll("right")}
+          className="absolute right-6 top-1/2 z-30 flex size-11 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-border bg-card/95 text-foreground shadow-lg backdrop-blur-md transition-all hover:scale-110 hover:border-primary/40 active:scale-95"
+        >
+          <ArrowRight className="size-4.5" />
+        </button>
+
+        {/* Motion Track */}
+        <motion.div
+          ref={containerRef}
+          style={{ x }}
+          className="flex w-max gap-6 px-8 sm:gap-8 lg:gap-10"
+        >
+          {displayItems.map((template, index) => (
+            <div
+              key={`${template.id}-${index}`}
+              className="group relative w-[260px] flex-none sm:w-[290px] lg:w-[320px]"
+            >
+              {/* Outer Card with Elevation on Hover */}
+              <div className="relative aspect-[210/297] w-full overflow-hidden rounded-2xl border border-border bg-card p-3 shadow-xs transition-all duration-300 ease-out group-hover:-translate-y-2 group-hover:border-primary/40 group-hover:shadow-2xl">
+                
+                {/* Paper Canvas */}
+                <div className="relative h-full w-full overflow-hidden rounded-xl border border-border/50 bg-white shadow-2xs">
+                  <Image
+                    src={template.thumbnailUrl}
+                    alt={template.name}
+                    fill
+                    sizes="(max-width: 640px) 260px, (max-width: 1024px) 290px, 320px"
+                    className="object-contain p-1 transition-transform duration-500 group-hover:scale-103"
+                  />
+                </div>
+
+                {/* Badges */}
+                <div className="absolute left-5 top-5 z-10 flex flex-col gap-1.5">
+                  {template.isAtsFriendly && (
+                    <span className="inline-flex items-center gap-1 rounded-md border border-border/80 bg-card/90 px-2 py-0.5 text-[10px] font-bold text-primary shadow-2xs backdrop-blur-xs">
+                      <ShieldCheck className="size-3 text-primary" />
+                      ATS Ready
+                    </span>
+                  )}
+                  {template.isPopular && (
+                    <span className="inline-flex items-center gap-1 rounded-md border border-accent-warm/40 bg-accent-warm/15 px-2 py-0.5 text-[10px] font-bold text-foreground shadow-2xs backdrop-blur-xs">
+                      <Sparkles className="size-2.5 text-accent-warm" />
+                      Popular
+                    </span>
+                  )}
+                </div>
+
+                {/* Dark Glass Overlay on Hover */}
+                <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-2.5 rounded-2xl bg-foreground/15 p-5 opacity-0 backdrop-blur-[3px] transition-all duration-200 group-hover:opacity-100">
+                  <Link
+                    href={`/resume/new?template=${template.slug}`}
+                    className="inline-flex h-10 w-full max-w-[180px] items-center justify-center gap-2 rounded-xl bg-primary px-4 text-xs font-bold text-primary-foreground shadow-lg transition-transform hover:scale-102 active:scale-95"
+                  >
+                    <span>Use Template</span>
+                    <ArrowUpRight className="size-3.5" />
+                  </Link>
+
+                  <button
+                    type="button"
+                    onClick={() => openPreview(template)}
+                    className="inline-flex h-9 w-full max-w-[180px] items-center justify-center gap-2 rounded-xl border border-border bg-card px-4 text-xs font-semibold text-foreground shadow-sm transition-transform hover:bg-muted hover:scale-102 active:scale-95"
+                  >
+                    <Eye className="size-3.5 text-muted-foreground" />
+                    <span>Quick Preview</span>
+                  </button>
+                </div>
               </div>
 
-              {/* Minimal floating CTA overlay on hover */}
-              <div className="absolute inset-0 flex items-end justify-center rounded-xl bg-black/5 p-4 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-                <Link
-                  href={`/templates/${item.slug}`}
-                  className="inline-flex items-center gap-1.5 rounded-full bg-foreground px-4 py-2 text-xs font-medium text-background shadow-md transition-transform duration-150 hover:scale-105"
-                >
-                  Use this template
-                  <ArrowUpRight className="size-3.5" />
-                </Link>
+              {/* Card Meta Description */}
+              <div className="mt-3.5 px-1 text-center">
+                <p className="text-xs font-bold text-foreground transition-colors group-hover:text-primary">
+                  {template.name}
+                </p>
+                <p className="mt-0.5 text-[11px] font-medium text-muted-foreground line-clamp-1">
+                  {template.description}
+                </p>
               </div>
             </div>
+          ))}
+        </motion.div>
+      </div>
 
-            <p className="mt-3 text-center text-xs font-medium text-muted-foreground/80 transition-colors group-hover:text-foreground">
-              {item.name}
-            </p>
-          </div>
-        ))}
-      </motion.div>
-    </div>
+      {/* Connected High-Fidelity Dialog */}
+      <TemplatePreviewModal
+        template={selectedTemplate}
+        open={isPreviewOpen}
+        onOpenChange={setIsPreviewOpen}
+      />
+    </>
   );
 }
