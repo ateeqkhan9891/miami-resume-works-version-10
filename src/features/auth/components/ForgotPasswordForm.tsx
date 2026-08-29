@@ -8,7 +8,7 @@ import Link from "next/link";
 import { ArrowLeft, Mail } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { sendPasswordResetEmail } from "@/services/auth/auth.service";
+import { sendPasswordResetEmail } from "@/features/auth/services/auth.service";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -16,7 +16,7 @@ import { Label } from "@/components/ui/label";
 import {
   forgotPasswordSchema,
   type ForgotPasswordFormData,
-} from "@/lib/validations/auth";
+} from "@/features/auth/schemas/auth";
 
 export default function ForgotPasswordForm() {
   const [isLoading, setIsLoading] = useState(false);
@@ -113,7 +113,7 @@ export default function ForgotPasswordForm() {
             <Input
               id="email"
               type="email"
-              placeholder="you@example.com"
+              placeholder="kylie@.com"
               autoComplete="email"
               className="pl-10"
               disabled={isLoading}
