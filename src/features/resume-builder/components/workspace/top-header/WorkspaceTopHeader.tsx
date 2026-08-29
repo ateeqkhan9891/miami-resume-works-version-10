@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Logo from "@/components/navigation/Logo";
 import { Button } from "@/components/ui/button";
-import { HelpCircle, Upload, Check, Pencil } from "lucide-react";
+import { HelpCircle, UploadCloud, Check, Pencil } from "lucide-react";
 import SaveStatus, { type SaveStatusType } from "./SaveStatus";
 
 interface WorkspaceTopHeaderProps {
@@ -38,14 +38,14 @@ export default function WorkspaceTopHeader({
   };
 
   return (
-    <header className="flex h-14 w-full shrink-0 items-center justify-between border-b border-neutral-200/80 bg-white px-4 dark:border-neutral-800 dark:bg-neutral-900">
-      {/* Left Segment: Branding, Document Name & Save Status */}
+    <header className="flex h-14 w-full shrink-0 items-center justify-between border-b border-border bg-card px-4">
+      {/* Left Segment: Branding, Document Title & Save Status */}
       <div className="flex items-center gap-3">
         <div className="flex items-center gap-3">
           <Logo />
         </div>
 
-        <div className="h-4 w-px bg-neutral-200 dark:bg-neutral-800" />
+        <div className="h-4 w-px bg-border" />
 
         {/* Editable Resume Title */}
         <div className="flex items-center gap-1.5">
@@ -61,13 +61,13 @@ export default function WorkspaceTopHeader({
                   if (e.key === "Escape") setIsEditingTitle(false);
                 }}
                 autoFocus
-                className="h-7 rounded-md border border-neutral-300 bg-neutral-50 px-2 text-xs font-medium text-neutral-900 outline-none focus:border-neutral-900 focus:bg-white dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-100"
+                className="h-7 rounded-md border border-input bg-muted/40 px-2 text-xs font-medium text-foreground outline-none focus:border-primary focus:bg-card"
               />
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={handleTitleSubmit}
-                className="h-6 w-6 rounded-md text-emerald-600 hover:bg-emerald-50 hover:text-emerald-700"
+                className="h-6 w-6 rounded-md text-primary hover:bg-accent/40"
               >
                 <Check className="h-3.5 w-3.5" />
               </Button>
@@ -75,29 +75,29 @@ export default function WorkspaceTopHeader({
           ) : (
             <button
               onClick={() => setIsEditingTitle(true)}
-              className="group flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium text-neutral-700 transition-colors hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-800"
+              className="group flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium text-foreground transition-colors hover:bg-muted"
             >
               <span className="max-w-[180px] truncate">{title}</span>
-              <Pencil className="h-3 w-3 opacity-0 transition-opacity group-hover:opacity-60" />
+              <Pencil className="h-3 w-3 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
             </button>
           )}
         </div>
 
-        <div className="h-4 w-px bg-neutral-200 dark:bg-neutral-800" />
+        <div className="h-4 w-px bg-border" />
 
-        {/* Dynamic Save Status */}
+        {/* Dynamic Save Status Indicator */}
         <SaveStatus status={saveStatus} />
       </div>
 
-      {/* Right Segment: Utilities & Auth Actions */}
+      {/* Right Segment: Utilities & Actions */}
       <div className="flex items-center gap-2">
         <Button
           variant="ghost"
           size="sm"
           onClick={onHelpClick}
-          className="h-8 gap-1.5 rounded-lg px-2.5 text-xs font-medium text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-800"
+          className="h-8 gap-1.5 rounded-lg px-2.5 text-xs font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
         >
-          <HelpCircle className="h-3.5 w-3.5 text-neutral-500" />
+          <HelpCircle className="h-3.5 w-3.5 text-muted-foreground" />
           <span>Help</span>
         </Button>
 
@@ -105,17 +105,17 @@ export default function WorkspaceTopHeader({
           variant="outline"
           size="sm"
           onClick={onUploadClick}
-          className="h-8 gap-1.5 rounded-lg border-neutral-200/90 bg-neutral-50/50 text-xs font-medium text-neutral-700 shadow-none transition-colors hover:bg-neutral-100 hover:text-neutral-900 dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-300"
+          className="h-8 gap-1.5 rounded-lg border-border bg-card text-xs font-medium text-foreground shadow-none transition-colors hover:bg-muted"
         >
-          <Upload className="h-3.5 w-3.5 text-neutral-500" />
+          <UploadCloud className="h-3.5 w-3.5 text-muted-foreground" />
           <span>Import</span>
         </Button>
 
-        <div className="my-auto h-4 w-px bg-neutral-200 dark:bg-neutral-800" />
+        <div className="my-auto h-4 w-px bg-border" />
 
         {user ? (
           <div className="flex items-center gap-2">
-            <span className="text-xs font-medium text-neutral-700 dark:text-neutral-300">
+            <span className="text-xs font-medium text-foreground">
               {user.name}
             </span>
           </div>
@@ -125,7 +125,7 @@ export default function WorkspaceTopHeader({
               variant="ghost"
               size="sm"
               onClick={onLoginClick}
-              className="h-8 rounded-lg px-3 text-xs font-medium text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-800"
+              className="h-8 rounded-lg px-3 text-xs font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
             >
               Sign In
             </Button>
@@ -133,7 +133,7 @@ export default function WorkspaceTopHeader({
             <Button
               size="sm"
               onClick={onSignUpClick}
-              className="h-8 rounded-lg bg-neutral-900 px-3 text-xs font-medium text-white shadow-sm transition-all hover:bg-neutral-800 active:scale-95 dark:bg-neutral-100 dark:text-neutral-900 dark:hover:bg-white"
+              className="h-8 rounded-lg bg-primary px-3 text-xs font-medium text-primary-foreground shadow-xs transition-all hover:opacity-95 active:scale-95"
             >
               Get Started
             </Button>

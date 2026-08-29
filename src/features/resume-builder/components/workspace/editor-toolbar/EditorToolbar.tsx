@@ -12,68 +12,77 @@ import {
   RotateCw,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import type { ActivePanelType } from "@/features/resume-builder/types/workspace-panels";
 
 interface EditorToolbarProps {
+  activePanel: ActivePanelType;
+  onTogglePanel: (panel: ActivePanelType) => void;
+  onTailorClick: () => void;
+  onRearrangeClick: () => void;
   onUndo?: () => void;
   onRedo?: () => void;
   canUndo?: boolean;
   canRedo?: boolean;
-  onAtsCheck?: () => void;
-  onTailorToJob?: () => void;
-  onTemplatesClick?: () => void;
-  onRearrangeClick?: () => void;
-  onDesignClick?: () => void;
-  onFontClick?: () => void;
 }
 
 export default function EditorToolbar({
+  activePanel,
+  onTogglePanel,
+  onTailorClick,
+  onRearrangeClick,
   onUndo,
   onRedo,
   canUndo = true,
   canRedo = false,
-  onAtsCheck,
-  onTailorToJob,
-  onTemplatesClick,
-  onRearrangeClick,
-  onDesignClick,
-  onFontClick,
 }: EditorToolbarProps) {
+  const handleToggle = (panel: ActivePanelType) => {
+    onTogglePanel(activePanel === panel ? null : panel);
+  };
+
   return (
     <header className="flex h-13 w-full shrink-0 items-center justify-between border-b border-neutral-200/80 bg-white px-4 shadow-[0_1px_2px_rgba(0,0,0,0.03)] dark:border-neutral-800 dark:bg-neutral-900">
-      {/* Left side: Prominent Highlighted Action Buttons */}
+      {/* Action Buttons */}
       <div className="flex items-center gap-2">
-        {/* ATS Check Button Highlight */}
+        {/* ATS Check */}
         <Button
           variant="outline"
           size="sm"
-          onClick={onAtsCheck}
-          className="h-8 gap-1.5 rounded-lg border-emerald-200 bg-emerald-50/70 text-xs font-semibold text-emerald-900 shadow-sm transition-all duration-150 hover:border-emerald-300 hover:bg-emerald-100/80 active:scale-95 dark:border-emerald-800/60 dark:bg-emerald-950/40 dark:text-emerald-300 dark:hover:bg-emerald-900/50"
+          onClick={() => handleToggle("ats-check")}
+          className={`h-8 gap-1.5 rounded-lg border-emerald-200 text-xs font-semibold shadow-sm transition-all duration-150 ${
+            activePanel === "ats-check"
+              ? "bg-emerald-600 text-white hover:bg-emerald-700"
+              : "bg-emerald-50/70 text-emerald-900 hover:bg-emerald-100/80"
+          }`}
         >
-          <ScanSearch className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+          <ScanSearch className="h-3.5 w-3.5" />
           <span>ATS Check</span>
         </Button>
 
-        {/* Tailor to Job Button Highlight */}
+        {/* Tailor to Job */}
         <Button
           variant="outline"
           size="sm"
-          onClick={onTailorToJob}
-          className="h-8 gap-1.5 rounded-lg border-indigo-200 bg-indigo-50/70 text-xs font-semibold text-indigo-900 shadow-sm transition-all duration-150 hover:border-indigo-300 hover:bg-indigo-100/80 active:scale-95 dark:border-indigo-800/60 dark:bg-indigo-950/40 dark:text-indigo-300 dark:hover:bg-indigo-900/50"
+          onClick={onTailorClick}
+          className={`h-8 gap-1.5 rounded-lg border-indigo-200 text-xs font-semibold shadow-sm transition-all duration-150 ${
+            activePanel === "tailor-job"
+              ? "bg-indigo-600 text-white hover:bg-indigo-700"
+              : "bg-indigo-50/70 text-indigo-900 hover:bg-indigo-100/80"
+          }`}
         >
-          <Briefcase className="h-3.5 w-3.5 text-indigo-600 dark:text-indigo-400" />
+          <Briefcase className="h-3.5 w-3.5" />
           <span>Tailor to Job</span>
         </Button>
       </div>
 
-      {/* Center: Layout & Styling Controls */}
+      {/* Editor Layout Controls */}
       <div className="flex items-center gap-2">
         <div className="h-4 w-px bg-neutral-200 dark:bg-neutral-800" />
 
         <nav aria-label="Editor tools" className="flex items-center gap-1">
           <Button
-            variant="ghost"
+            variant={activePanel === "templates" ? "secondary" : "ghost"}
             size="sm"
-            onClick={onTemplatesClick}
+            onClick={() => handleToggle("templates")}
             className="h-8 gap-1.5 rounded-lg px-2.5 text-xs font-medium text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-800"
           >
             <LayoutTemplate className="h-3.5 w-3.5 text-neutral-500" />
@@ -91,9 +100,9 @@ export default function EditorToolbar({
           </Button>
 
           <Button
-            variant="ghost"
+            variant={activePanel === "design" ? "secondary" : "ghost"}
             size="sm"
-            onClick={onDesignClick}
+            onClick={() => handleToggle("design")}
             className="h-8 gap-1.5 rounded-lg px-2.5 text-xs font-medium text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-800"
           >
             <Palette className="h-3.5 w-3.5 text-neutral-500" />
@@ -101,9 +110,9 @@ export default function EditorToolbar({
           </Button>
 
           <Button
-            variant="ghost"
+            variant={activePanel === "font" ? "secondary" : "ghost"}
             size="sm"
-            onClick={onFontClick}
+            onClick={() => handleToggle("font")}
             className="h-8 gap-1.5 rounded-lg px-2.5 text-xs font-medium text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-800"
           >
             <Type className="h-3.5 w-3.5 text-neutral-500" />
@@ -113,7 +122,7 @@ export default function EditorToolbar({
         </nav>
       </div>
 
-      {/* Right side: Undo / Redo History */}
+      {/* History Controls */}
       <div className="flex items-center gap-1">
         <div className="flex items-center gap-0.5 rounded-lg border border-neutral-200/80 bg-neutral-50/80 p-0.5 dark:border-neutral-800 dark:bg-neutral-900">
           <Button

@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import CanvasActions from "../canvas-actions/CanvasActions";
 import CanvasZoomControls from "../canvas-actions/CanvasZoomControls";
 import ResumePage from "./ResumePage";
+import type { Template } from "@/types/template";
 
 const A4_WIDTH = 794;
 const A4_HEIGHT = 1123;
@@ -12,7 +13,11 @@ const MAX_SCALE = 1.6;
 const ZOOM_STEP = 0.1;
 const HIDE_DELAY_MS = 1800;
 
-export default function WorkspaceCanvas() {
+interface ResumeCanvasProps {
+  currentTemplate: Template;
+}
+
+export default function ResumeCanvas({ currentTemplate }: ResumeCanvasProps) {
   const canvasRef = useRef<HTMLDivElement>(null);
   const hideTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -20,7 +25,7 @@ export default function WorkspaceCanvas() {
   const [isZoomVisible, setIsZoomVisible] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
-  // Trigger visibility and reset fade-out timer
+  // Trigger floating zoom bar visibility and reset auto-hide timeout
   const triggerZoomVisibility = useCallback(() => {
     setIsZoomVisible(true);
 
@@ -33,10 +38,11 @@ export default function WorkspaceCanvas() {
     }, HIDE_DELAY_MS);
   }, []);
 
-  // Fit calculation based on container width
+  // Compute best fit scale based on canvas viewport width
   const getFitScale = useCallback(() => {
     if (!canvasRef.current) return 0.85;
     const { clientWidth } = canvasRef.current;
+    // Provide safe horizontal margin for side action controls and margins
     const availableWidth = clientWidth - 200;
     const widthScale = availableWidth / A4_WIDTH;
     return Math.min(Math.max(Number(widthScale.toFixed(2)), 0.65), 1.05);
@@ -57,7 +63,7 @@ export default function WorkspaceCanvas() {
     triggerZoomVisibility();
   };
 
-  // Initial calculation and resize handling
+  // Initial fit scale and resize listener
   useEffect(() => {
     setScale(getFitScale());
 
@@ -69,7 +75,7 @@ export default function WorkspaceCanvas() {
     return () => observer.disconnect();
   }, [getFitScale]);
 
-  // Ctrl/Cmd + Mousewheel or Trackpad pinch zoom handler
+  // Mouse wheel / trackpad pinch zoom (Ctrl / Cmd + Wheel)
   useEffect(() => {
     const canvasElement = canvasRef.current;
     if (!canvasElement) return;
@@ -92,7 +98,7 @@ export default function WorkspaceCanvas() {
     return () => canvasElement.removeEventListener("wheel", handleWheel);
   }, [triggerZoomVisibility]);
 
-  // Clean up timer on unmount
+  // Clean up auto-hide timer on unmount
   useEffect(() => {
     return () => {
       if (hideTimeoutRef.current) {
@@ -112,7 +118,7 @@ export default function WorkspaceCanvas() {
         backgroundSize: "20px 20px",
       }}
     >
-      {/* Scrollable canvas */}
+      {/* Scrollable canvas wrapper */}
       <div className="h-full overflow-auto">
         <div className="flex min-h-full min-w-fit items-center justify-center p-14">
           {/* Scaled bounding wrapper */}
@@ -123,19 +129,19 @@ export default function WorkspaceCanvas() {
               height: A4_HEIGHT * scale,
             }}
           >
-            {/* Paper frame with multi-tier elevation shadow */}
+            {/* Real A4 Paper Frame with layered elevation shadow */}
             <div
-              className="absolute left-0 top-0 origin-top-left rounded-[2px] bg-white shadow-[0_0_0_1px_rgba(0,0,0,0.06),0_2px_4px_rgba(0,0,0,0.04),0_12px_24px_rgba(0,0,0,0.06),0_24px_48px_rgba(0,0,0,0.06)] transition-transform duration-75 ease-out"
+              className="absolute left-0 top-0 origin-top-left overflow-hidden rounded-[2px] bg-white shadow-[0_0_0_1px_rgba(0,0,0,0.06),0_2px_4px_rgba(0,0,0,0.04),0_12px_24px_rgba(0,0,0,0.06),0_24px_48px_rgba(0,0,0,0.06)] transition-transform duration-75 ease-out"
               style={{
                 width: A4_WIDTH,
                 height: A4_HEIGHT,
                 transform: `scale(${scale})`,
               }}
             >
-              <ResumePage />
+              <ResumePage currentTemplate={currentTemplate} />
             </div>
 
-            {/* Actions anchored cleanly outside right edge */}
+            {/* Actions anchored cleanly outside the right edge */}
             <div className="absolute left-full top-0 z-20 pl-4">
               <CanvasActions />
             </div>
