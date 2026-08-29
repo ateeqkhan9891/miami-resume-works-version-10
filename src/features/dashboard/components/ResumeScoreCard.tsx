@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Gauge, ArrowRight, CheckCircle2, BrainCog  } from "lucide-react";
+import { Gauge, ArrowRight, CheckCircle2, Sparkles } from "lucide-react";
 
 interface ResumeScoreCardProps {
   score?: number;
@@ -39,7 +39,7 @@ export default function ResumeScoreCard({
         <div
           className={`flex items-center gap-1 rounded-full border px-2.5 py-1 text-xs font-bold ${scoreBg} ${scoreColor}`}
         >
-          <BrainCog  className="size-3" />
+          <Sparkles className="size-3" />
           <span>{score}/100</span>
         </div>
       </div>
