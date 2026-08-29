@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import TemplateRenderer from "@/features/templates/components/TemplateRenderer";
 import { SAMPLE_RESUME_DATA } from "@/features/templates/data/sample-resume-data";
 import { SAMPLE_PROFESSIONAL_RESUME_DATA } from "@/features/templates/data/sample-professional-mahira-resume";
-
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -83,7 +83,7 @@ export default function TemplatePreviewDialog({
               transformOrigin: "top left",
             }}
             className="absolute left-0 top-0 overflow-hidden bg-white"
-          >
+          > 
             <TemplateRenderer
               template={template}
               data={previewData}
@@ -92,12 +92,14 @@ export default function TemplatePreviewDialog({
 
           {/* Floating 'Use Template' Pill Button */}
           <div className="absolute bottom-2 left-1/2 z-30 -translate-x-1/2">
-            {/* <Button
-              size="sm"
-              className="h-10  rounded-full bg-emerald-600 px-7 text-xs font-semibold text-white shadow-xl ring-1 ring-white/20 transition-all hover:bg-emerald-500 hover:scale-105 active:scale-95 cursor-pointer"
-            >
-              Use Template
-            </Button> */}
+            <Link href={`/resume/new?template=${template.slug}`}>
+              <Button
+                size="sm"
+                className="h-10 rounded-full bg-emerald-600 px-7 text-xs font-semibold text-white"
+              >
+                Use Template
+              </Button>
+            </Link>
           </div>
         </div>
       </DialogContent>

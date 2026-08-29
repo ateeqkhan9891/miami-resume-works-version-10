@@ -1,5 +1,5 @@
 import ResumeWorkspace from "@/features/resume-builder/components/workspace/ResumeWorkspace";
 
-export default function WorkspacePage() {
+export default function NewResumePage() {
   return <ResumeWorkspace />;
 }
