@@ -1,61 +1,105 @@
+"use client";
+
+import { Trophy, Trash2 } from "lucide-react";
 import type { ResumePreviewData } from "@/types/resume";
-import { ModernTemplateIcons } from "../ModernTemplateIcons";
+import { EditableText } from "@/features/resume-builder/components/workspace/editable/EditableText";
+import EditableSectionWrapper from "@/features/resume-builder/components/workspace/editable/EditableSectionWrapper";
+import { useResumeStore } from "@/features/resume-builder/store/useResumeStore";
 
 interface ModernAwardsProps {
   awards: ResumePreviewData["awards"];
+  isEditable?: boolean;
 }
 
 export default function ModernAwards({
   awards,
+  isEditable = true,
 }: ModernAwardsProps) {
-  const AwardIcon = ModernTemplateIcons.awards;
+  const updateAwards = useResumeStore((state) => state.updateAwards);
+  const removeAward = useResumeStore((state) => state.removeAward);
 
   return (
-    <section>
-      <div className="mb-3 flex items-center gap-2.5">
-        <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-cyan-50 text-cyan-600">
-          <AwardIcon size={11} strokeWidth={2.2} />
-        </div>
+    <EditableSectionWrapper
+      sectionId="awards"
+      defaultTitle="Awards"
+      icon={<Trophy className="h-3.5 w-3.5" />}
+      isEditable={isEditable}
+      canAddEntry={true}
+    >
+      <div className="space-y-3">
+        {awards.map((item) => (
+          <article key={item.id} className="group/item relative rounded-lg border border-neutral-100 p-2.5 shadow-2xs">
+            {isEditable && awards.length > 1 && (
+              <button
+                type="button"
+                onClick={() => removeAward(item.id)}
+                title="Remove Award"
+                className="absolute right-2 top-2 opacity-0 group-hover/item:opacity-100 p-1 text-neutral-400 hover:text-red-500 transition-opacity"
+              >
+                <Trash2 className="h-3 w-3" />
+              </button>
+            )}
 
-        <h2 className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-900">
-          Awards & Honors
-        </h2>
-
-        <div className="h-px flex-1 bg-cyan-100" />
-      </div>
-
-      <div className="space-y-2.5">
-        {awards.map((award) => (
-          <article
-            key={award.id}
-            className="rounded-md border border-cyan-100 bg-cyan-50/40 px-3 py-2"
-          >
-            <div className="flex items-start justify-between gap-3">
-              <h3 className="min-w-0 text-[9.5px] font-bold leading-snug text-slate-900">
-                {award.title}
+            <div className="flex items-start justify-between gap-2">
+              <h3 className="text-[9.5px] font-bold text-neutral-900">
+                {isEditable ? (
+                  <EditableText
+                    value={item.title}
+                    onChange={(val) => updateAwards(item.id, "title", val)}
+                    placeholder="Award Title"
+                  />
+                ) : (
+                  item.title
+                )}
               </h3>
 
-              {award.date && (
-                <span className="shrink-0 text-[7.5px] font-medium text-cyan-600">
-                  {award.date}
-                </span>
+              {(item.date || isEditable) && (
+                <div className="text-[8px] text-neutral-400">
+                  {isEditable ? (
+                    <EditableText
+                      value={item.date || ""}
+                      onChange={(val) => updateAwards(item.id, "date", val)}
+                      placeholder="Year"
+                    />
+                  ) : (
+                    item.date
+                  )}
+                </div>
               )}
             </div>
 
-            {award.issuer && (
-              <p className="mt-0.5 text-[8px] font-medium text-slate-500">
-                {award.issuer}
-              </p>
+            {(item.issuer || isEditable) && (
+              <div className="mt-0.5 text-[8.5px] font-medium text-emerald-800">
+                {isEditable ? (
+                  <EditableText
+                    value={item.issuer || ""}
+                    onChange={(val) => updateAwards(item.id, "issuer", val)}
+                    placeholder="Issuing Organization"
+                  />
+                ) : (
+                  item.issuer
+                )}
+              </div>
             )}
 
-            {award.description && (
-              <p className="mt-0.5 text-[8.5px] leading-[1.5] text-slate-600">
-                {award.description}
-              </p>
+            {(item.description || isEditable) && (
+              <div className="mt-1 text-[8px] text-neutral-600">
+                {isEditable ? (
+                  <EditableText
+                    value={item.description || ""}
+                    onChange={(val) => updateAwards(item.id, "description", val)}
+                    placeholder="Brief description..."
+                    multiline
+                    className="w-full"
+                  />
+                ) : (
+                  <p>{item.description}</p>
+                )}
+              </div>
             )}
           </article>
         ))}
       </div>
-    </section>
+    </EditableSectionWrapper>
   );
 }

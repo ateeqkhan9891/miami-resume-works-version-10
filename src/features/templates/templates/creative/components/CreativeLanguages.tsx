@@ -1,7 +1,12 @@
+"use client";
+
 import type { ResumePreviewData } from "@/types/resume";
+import { EditableText } from "@/features/resume-builder/components/workspace/editable/EditableText";
+import { useResumeStore } from "@/features/resume-builder/store/useResumeStore";
 
 interface CreativeLanguagesProps {
   languages: ResumePreviewData["languages"];
+  isEditable?: boolean;
 }
 
 const proficiencyLevels = {
@@ -14,7 +19,10 @@ const proficiencyLevels = {
 
 export default function CreativeLanguages({
   languages,
+  isEditable = true,
 }: CreativeLanguagesProps) {
+  const updateLanguages = useResumeStore((state) => state.updateLanguages);
+
   return (
     <section>
       <div className="mb-5 flex items-center gap-3">
@@ -37,7 +45,15 @@ export default function CreativeLanguages({
               className="flex items-center justify-between gap-3"
             >
               <span className="text-[9px] font-medium text-zinc-700">
-                {language.name}
+                {isEditable ? (
+                  <EditableText
+                    value={language.name}
+                    onChange={(val) => updateLanguages(language.id, "name", val)}
+                    placeholder="Language"
+                  />
+                ) : (
+                  language.name
+                )}
               </span>
 
               <div className="flex shrink-0 items-center gap-1">
@@ -45,9 +61,7 @@ export default function CreativeLanguages({
                   <span
                     key={index}
                     className={`h-1.5 w-1.5 rounded-full ${
-                      index < level
-                        ? "bg-amber-400"
-                        : "bg-zinc-200"
+                      index < level ? "bg-amber-400" : "bg-zinc-200"
                     }`}
                   />
                 ))}

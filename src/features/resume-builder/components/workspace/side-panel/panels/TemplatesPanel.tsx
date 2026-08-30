@@ -3,6 +3,7 @@
 import { Check } from "lucide-react";
 import TemplateRenderer from "@/features/templates/components/TemplateRenderer";
 import { TEMPLATES_DATA } from "@/features/templates/data/templates";
+import { useResumeStore } from "@/features/resume-builder/store/useResumeStore";
 import { SAMPLE_RESUME_DATA } from "@/features/templates/data/sample-resume-data";
 import { SAMPLE_PROFESSIONAL_RESUME_DATA } from "@/features/templates/data/sample-professional-mahira-resume";
 import type { Template } from "@/types/template";
@@ -13,15 +14,26 @@ const THUMBNAIL_SCALE = 0.19;
 const CARD_HEIGHT = Math.round(A4_HEIGHT * THUMBNAIL_SCALE); // ~213px
 
 interface TemplatesPanelProps {
+  selectedTemplate?: Template;
   selectedTemplateId?: string;
   onSelectTemplate?: (template: Template) => void;
 }
 
 export default function TemplatesPanel({
-  selectedTemplateId = "miami-modern",
+  selectedTemplate,
+  selectedTemplateId,
   onSelectTemplate,
 }: TemplatesPanelProps) {
+  const activeResumeData = useResumeStore((state) => state.resumeData);
+
+  const activeId = selectedTemplate?.id || selectedTemplate?.slug || selectedTemplateId || "miami-modern";
+
   const getPreviewData = (slug: string) => {
+    // If the user has custom typed data in store, use it for preview; otherwise fallback to samples
+    if (activeResumeData && activeResumeData.profile?.fullName) {
+      return activeResumeData;
+    }
+
     switch (slug) {
       case "professional":
         return SAMPLE_PROFESSIONAL_RESUME_DATA;
@@ -36,7 +48,7 @@ export default function TemplatesPanel({
     <div className="grid grid-cols-2 gap-3">
       {TEMPLATES_DATA.map((tmpl) => {
         const isSelected =
-          selectedTemplateId === tmpl.id || selectedTemplateId === tmpl.slug;
+          activeId === tmpl.id || activeId === tmpl.slug;
         const previewData = getPreviewData(tmpl.slug);
 
         return (
@@ -61,7 +73,11 @@ export default function TemplatesPanel({
                 transform: `scale(${THUMBNAIL_SCALE})`,
               }}
             >
-              <TemplateRenderer template={tmpl} data={previewData} />
+              <TemplateRenderer
+                template={tmpl}
+                data={previewData}
+                isEditable={false}
+              />
             </div>
 
             <div

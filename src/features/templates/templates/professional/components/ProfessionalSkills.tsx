@@ -1,7 +1,12 @@
+"use client";
+
 import type { ResumePreviewData } from "@/types/resume";
+import { EditableText } from "@/features/resume-builder/components/workspace/editable/EditableText";
+import { useResumeStore } from "@/features/resume-builder/store/useResumeStore";
 
 interface ProfessionalSkillsProps {
   skills: ResumePreviewData["skills"];
+  isEditable?: boolean;
 }
 
 const skillGroups = [
@@ -36,7 +41,10 @@ const skillGroups = [
 
 export default function ProfessionalSkills({
   skills,
+  isEditable = true,
 }: ProfessionalSkillsProps) {
+  const updateSkills = useResumeStore((state) => state.updateSkills);
+
   const availableSkills = new Set(skills);
 
   const groups = skillGroups
@@ -55,6 +63,14 @@ export default function ProfessionalSkills({
   const otherSkills = skills.filter(
     (skill) => !groupedSkills.has(skill),
   );
+
+  const handleSkillsTextChange = (rawText: string) => {
+    const parsed = rawText
+      .split(/[,•\n]+/)
+      .map((s) => s.trim())
+      .filter(Boolean);
+    updateSkills(parsed);
+  };
 
   return (
     <section>
@@ -88,6 +104,19 @@ export default function ProfessionalSkills({
             <p className="text-[9px] leading-[1.6] text-slate-700">
               {otherSkills.join("  •  ")}
             </p>
+          </div>
+        )}
+
+        {isEditable && (
+          <div className="mt-2 border-t border-slate-100 pt-2">
+            <span className="text-[7.5px] uppercase text-slate-400">Edit Full Skillset (comma separated):</span>
+            <EditableText
+              value={skills.join(", ")}
+              onChange={handleSkillsTextChange}
+              placeholder="React, TypeScript, SQL..."
+              className="mt-1 w-full text-[8.5px] text-slate-600"
+              multiline
+            />
           </div>
         )}
       </div>

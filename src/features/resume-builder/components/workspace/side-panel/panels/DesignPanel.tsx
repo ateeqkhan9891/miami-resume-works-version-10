@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import {
   Check,
   Palette,
@@ -22,16 +21,17 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { useResumeStore } from "@/features/resume-builder/store/useResumeStore";
 
 const PRESET_PALETTES = [
-  { name: "Forest", primary: "#214e3b", bg: "#f7f5ef" },
-  { name: "Slate", primary: "#0f172a", bg: "#f8fafc" },
-  { name: "Indigo", primary: "#4f46e5", bg: "#eef2ff" },
-  { name: "Sky", primary: "#0284c7", bg: "#f0f9ff" },
-  { name: "Emerald", primary: "#059669", bg: "#ecfdf5" },
-  { name: "Amber", primary: "#b88a5a", bg: "#fbf8f3" },
-  { name: "Rose", primary: "#b42318", bg: "#fff1f2" },
-  { name: "Violet", primary: "#7c3aed", bg: "#f5f3ff" },
+  { name: "Forest", primary: "#214e3b" },
+  { name: "Slate", primary: "#0f172a" },
+  { name: "Indigo", primary: "#4f46e5" },
+  { name: "Sky", primary: "#0284c7" },
+  { name: "Emerald", primary: "#059669" },
+  { name: "Amber", primary: "#b88a5a" },
+  { name: "Rose", primary: "#b42318" },
+  { name: "Violet", primary: "#7c3aed" },
 ];
 
 const FONT_FAMILIES = [
@@ -43,30 +43,8 @@ const FONT_FAMILIES = [
 ];
 
 export default function DesignPanel() {
-  // Theme & Colors
-  const [accentColor, setAccentColor] = useState("#214e3b");
-  const [customHex, setCustomHex] = useState("#214e3b");
-
-  // Typography
-  const [selectedFont, setSelectedFont] = useState("inter");
-  const [fontSize, setFontSize] = useState<"small" | "medium" | "large">("medium");
-
-  // Spacing & Layout
-  const [pageMargin, setPageMargin] = useState<"compact" | "normal" | "spacious">("normal");
-  const [lineSpacing, setLineSpacing] = useState<"dense" | "normal" | "relaxed">("normal");
-
-  // Header & Photo
-  const [headerAlign, setHeaderAlign] = useState<"left" | "center" | "split">("split");
-  const [photoShape, setPhotoShape] = useState<"circle" | "rounded" | "none">("circle");
-
-  // Section Styling
-  const [dividerStyle, setDividerStyle] = useState<"solid" | "dashed" | "minimal" | "none">("solid");
-  const [bulletStyle, setBulletStyle] = useState<"dot" | "dash" | "diamond">("dot");
-
-  const handleColorChange = (hex: string) => {
-    setAccentColor(hex);
-    setCustomHex(hex);
-  };
+  const design = useResumeStore((state) => state.design);
+  const updateDesign = useResumeStore((state) => state.updateDesign);
 
   return (
     <div className="space-y-4 pb-8">
@@ -93,14 +71,14 @@ export default function DesignPanel() {
                 <button
                   key={c.primary}
                   type="button"
-                  onClick={() => handleColorChange(c.primary)}
+                  onClick={() => updateDesign("accentColor", c.primary)}
                   className="group flex flex-col items-center gap-1 rounded-xl border border-border bg-card p-2 transition-all hover:border-foreground/30 hover:shadow-xs"
                 >
                   <div
                     className="flex h-5 w-5 items-center justify-center rounded-full shadow-xs transition-transform group-hover:scale-110"
                     style={{ backgroundColor: c.primary }}
                   >
-                    {accentColor === c.primary && (
+                    {design.accentColor === c.primary && (
                       <Check className="h-3 w-3 stroke-[3] text-white" />
                     )}
                   </div>
@@ -116,8 +94,8 @@ export default function DesignPanel() {
               <div className="flex items-center gap-2">
                 <input
                   type="color"
-                  value={customHex}
-                  onChange={(e) => handleColorChange(e.target.value)}
+                  value={design.accentColor}
+                  onChange={(e) => updateDesign("accentColor", e.target.value)}
                   className="h-6 w-6 cursor-pointer rounded-md border-0 bg-transparent p-0"
                 />
                 <span className="text-xs font-medium text-foreground">
@@ -126,8 +104,8 @@ export default function DesignPanel() {
               </div>
               <input
                 type="text"
-                value={customHex}
-                onChange={(e) => handleColorChange(e.target.value)}
+                value={design.accentColor}
+                onChange={(e) => updateDesign("accentColor", e.target.value)}
                 className="h-7 w-22 rounded-md border border-input bg-muted/50 px-2 text-center font-mono text-xs font-medium uppercase text-foreground outline-none focus:border-primary"
               />
             </div>
@@ -146,7 +124,6 @@ export default function DesignPanel() {
             </div>
           </AccordionTrigger>
           <AccordionContent className="space-y-3.5 pt-1 pb-3">
-            {/* Font Family Selection */}
             <div className="space-y-1.5">
               <Label className="text-[11px] font-medium text-muted-foreground">
                 Primary Font
@@ -156,9 +133,9 @@ export default function DesignPanel() {
                   <button
                     key={font.id}
                     type="button"
-                    onClick={() => setSelectedFont(font.id)}
+                    onClick={() => updateDesign("fontFamily", font.id)}
                     className={`flex w-full items-center justify-between rounded-xl border px-3 py-2 text-left transition-all ${
-                      selectedFont === font.id
+                      design.fontFamily === font.id
                         ? "border-primary bg-accent/40 shadow-xs"
                         : "border-border bg-card/80 hover:border-foreground/20"
                     }`}
@@ -169,7 +146,7 @@ export default function DesignPanel() {
                       </p>
                       <p className="text-[10px] text-muted-foreground">{font.category}</p>
                     </div>
-                    {selectedFont === font.id && (
+                    {design.fontFamily === font.id && (
                       <Check className="h-3.5 w-3.5 text-primary" />
                     )}
                   </button>
@@ -177,7 +154,6 @@ export default function DesignPanel() {
               </div>
             </div>
 
-            {/* Font Size Preset */}
             <div className="space-y-1.5">
               <Label className="text-[11px] font-medium text-muted-foreground">
                 Body Font Size
@@ -191,9 +167,9 @@ export default function DesignPanel() {
                   <button
                     key={s.id}
                     type="button"
-                    onClick={() => setFontSize(s.id as "small" | "medium" | "large")}
+                    onClick={() => updateDesign("fontSize", s.id as any)}
                     className={`rounded-lg border py-1.5 text-[10px] font-medium transition ${
-                      fontSize === s.id
+                      design.fontSize === s.id
                         ? "border-primary bg-primary text-primary-foreground"
                         : "border-border bg-card text-foreground hover:bg-muted"
                     }`}
@@ -227,9 +203,9 @@ export default function DesignPanel() {
                   <button
                     key={m}
                     type="button"
-                    onClick={() => setPageMargin(m as "compact" | "normal" | "spacious")}
+                    onClick={() => updateDesign("pageMargin", m as any)}
                     className={`rounded-lg border py-1.5 text-xs font-medium capitalize transition ${
-                      pageMargin === m
+                      design.pageMargin === m
                         ? "border-primary bg-primary text-primary-foreground"
                         : "border-border bg-card text-foreground hover:bg-muted"
                     }`}
@@ -249,9 +225,9 @@ export default function DesignPanel() {
                   <button
                     key={l}
                     type="button"
-                    onClick={() => setLineSpacing(l as "dense" | "normal" | "relaxed")}
+                    onClick={() => updateDesign("lineSpacing", l as any)}
                     className={`rounded-lg border py-1.5 text-xs font-medium capitalize transition ${
-                      lineSpacing === l
+                      design.lineSpacing === l
                         ? "border-primary bg-primary text-primary-foreground"
                         : "border-border bg-card text-foreground hover:bg-muted"
                     }`}
@@ -291,9 +267,9 @@ export default function DesignPanel() {
                     <button
                       key={h.id}
                       type="button"
-                      onClick={() => setHeaderAlign(h.id as "left" | "center" | "split")}
+                      onClick={() => updateDesign("headerAlign", h.id as any)}
                       className={`flex flex-col items-center gap-1 rounded-xl border p-2 text-[11px] font-medium transition ${
-                        headerAlign === h.id
+                        design.headerAlign === h.id
                           ? "border-primary bg-primary text-primary-foreground"
                           : "border-border bg-card text-foreground hover:bg-muted"
                       }`}
@@ -321,9 +297,9 @@ export default function DesignPanel() {
                     <button
                       key={p.id}
                       type="button"
-                      onClick={() => setPhotoShape(p.id as "circle" | "rounded" | "none")}
+                      onClick={() => updateDesign("photoShape", p.id as any)}
                       className={`flex flex-col items-center gap-1 rounded-xl border p-2 text-[11px] font-medium transition ${
-                        photoShape === p.id
+                        design.photoShape === p.id
                           ? "border-primary bg-primary text-primary-foreground"
                           : "border-border bg-card text-foreground hover:bg-muted"
                       }`}
@@ -359,9 +335,9 @@ export default function DesignPanel() {
                   <button
                     key={d}
                     type="button"
-                    onClick={() => setDividerStyle(d as "solid" | "dashed" | "minimal" | "none")}
+                    onClick={() => updateDesign("dividerStyle", d as any)}
                     className={`rounded-lg border py-1.5 text-[11px] font-medium capitalize transition ${
-                      dividerStyle === d
+                      design.dividerStyle === d
                         ? "border-primary bg-primary text-primary-foreground"
                         : "border-border bg-card text-foreground hover:bg-muted"
                     }`}
@@ -385,9 +361,9 @@ export default function DesignPanel() {
                   <button
                     key={b.id}
                     type="button"
-                    onClick={() => setBulletStyle(b.id as "dot" | "dash" | "diamond")}
+                    onClick={() => updateDesign("bulletStyle", b.id as any)}
                     className={`rounded-lg border py-1.5 text-[11px] font-medium transition ${
-                      bulletStyle === b.id
+                      design.bulletStyle === b.id
                         ? "border-primary bg-primary text-primary-foreground"
                         : "border-border bg-card text-foreground hover:bg-muted"
                     }`}

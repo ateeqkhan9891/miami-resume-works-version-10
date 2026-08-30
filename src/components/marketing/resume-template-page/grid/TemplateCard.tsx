@@ -32,13 +32,13 @@ export default function TemplateCard({ template,onPreview }: TemplateCardProps) 
               <Button
                 variant="secondary"
                 onClick={()=>onPreview(template)}
-                className="gap-2 rounded-xl bg-white text-slate-900 shadow-lg hover:bg-slate-50"
+                className="gap-2 cursor-pointer rounded-xl bg-white text-slate-900 shadow-lg hover:bg-slate-50"
               >
                 <Eye className="size-4" />
                 Preview
               </Button>
 
-              <Button className="gap-2 rounded-xl bg-emerald-600 text-white shadow-lg hover:bg-emerald-700">
+              <Button className="gap-2 cursor-pointer rounded-xl bg-emerald-600 text-white shadow-lg hover:bg-emerald-700">
                 Use Template
                 <ArrowRight className="size-4" />
               </Button>

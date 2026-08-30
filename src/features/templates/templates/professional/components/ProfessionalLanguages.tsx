@@ -1,7 +1,12 @@
+"use client";
+
 import type { ResumePreviewData } from "@/types/resume";
+import { EditableText } from "@/features/resume-builder/components/workspace/editable/EditableText";
+import { useResumeStore } from "@/features/resume-builder/store/useResumeStore";
 
 interface ProfessionalLanguagesProps {
   languages: ResumePreviewData["languages"];
+  isEditable?: boolean;
 }
 
 const proficiencyLabels = {
@@ -14,7 +19,10 @@ const proficiencyLabels = {
 
 export default function ProfessionalLanguages({
   languages,
+  isEditable = true,
 }: ProfessionalLanguagesProps) {
+  const updateLanguages = useResumeStore((state) => state.updateLanguages);
+
   return (
     <section>
       <div className="mb-5 flex items-center gap-3">
@@ -32,13 +40,29 @@ export default function ProfessionalLanguages({
             className="flex items-center justify-between gap-4"
           >
             <span className="text-[9px] font-semibold text-slate-700">
-              {language.name}
+              {isEditable ? (
+                <EditableText
+                  value={language.name}
+                  onChange={(val) => updateLanguages(language.id, "name", val)}
+                  placeholder="Language"
+                />
+              ) : (
+                language.name
+              )}
             </span>
 
             <span className="text-[8px] text-slate-400">
-              {language.proficiency
-                ? proficiencyLabels[language.proficiency]
-                : "Professional"}
+              {isEditable ? (
+                <EditableText
+                  value={language.proficiency}
+                  onChange={(val) => updateLanguages(language.id, "proficiency", val)}
+                  placeholder="fluent"
+                />
+              ) : (
+                language.proficiency
+                  ? proficiencyLabels[language.proficiency]
+                  : "Professional"
+              )}
             </span>
           </div>
         ))}

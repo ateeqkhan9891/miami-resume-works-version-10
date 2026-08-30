@@ -31,6 +31,14 @@ export default function WorkspaceSidePanel({
 }: WorkspaceSidePanelProps) {
   const isOpen = activePanel !== null;
 
+  const handleTemplateSelect = (template: Template) => {
+    onSelectTemplate(template);
+    // On small screens, close the panel after selection for immediate visual feedback
+    if (typeof window !== "undefined" && window.innerWidth < 768) {
+      onClose();
+    }
+  };
+
   return (
     <>
       {/* Mobile Dimmed Backdrop */}
@@ -73,15 +81,15 @@ export default function WorkspaceSidePanel({
         <div className="flex-1 overflow-y-auto p-4">
           {activePanel === "templates" && (
             <TemplatesPanel
-              selectedTemplateId={selectedTemplate.id}
-              onSelectTemplate={onSelectTemplate}
+              selectedTemplate={selectedTemplate}
+              onSelectTemplate={handleTemplateSelect}
             />
           )}
           {activePanel === "ats-check" && <AtsCheckPanel />}
           {activePanel === "tailor-job" && (
             <TailorJobPanel
-              jobData={targetJob}
-              onEditJob={onOpenTailorModal}
+              targetJob={targetJob}
+              onOpenModal={onOpenTailorModal}
             />
           )}
           {activePanel === "design" && <DesignPanel />}

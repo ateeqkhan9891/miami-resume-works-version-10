@@ -1,65 +1,76 @@
+"use client";
+
+import { Languages, Trash2 } from "lucide-react";
 import type { ResumePreviewData } from "@/types/resume";
-import { ModernTemplateIcons } from "../ModernTemplateIcons";
+import { EditableText } from "@/features/resume-builder/components/workspace/editable/EditableText";
+import EditableSectionWrapper from "@/features/resume-builder/components/workspace/editable/EditableSectionWrapper";
+import { useResumeStore } from "@/features/resume-builder/store/useResumeStore";
 
 interface ModernLanguagesProps {
   languages: ResumePreviewData["languages"];
+  isEditable?: boolean;
 }
 
 export default function ModernLanguages({
   languages,
+  isEditable = true,
 }: ModernLanguagesProps) {
-  const LanguageIcon = ModernTemplateIcons.languages;
+  const updateLanguages = useResumeStore((state) => state.updateLanguages);
+  const removeLanguage = useResumeStore((state) => state.removeLanguage);
 
   return (
-    <section>
-      <div className="mb-3 flex items-center gap-2.5">
-        <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-cyan-50 text-cyan-600">
-          <LanguageIcon size={11} strokeWidth={2.2} />
-        </div>
+    <EditableSectionWrapper
+      sectionId="languages"
+      defaultTitle="Languages"
+      icon={<Languages className="h-3.5 w-3.5" />}
+      isEditable={isEditable}
+      canAddEntry={true}
+    >
+      <div className="space-y-2">
+        {languages.map((item) => (
+          <div
+            key={item.id}
+            className="group/item relative flex items-center justify-between rounded-md border border-neutral-100 px-2.5 py-1.5 shadow-2xs"
+          >
+            <span className="text-[9px] font-semibold text-neutral-800">
+              {isEditable ? (
+                <EditableText
+                  value={item.name}
+                  onChange={(val) => updateLanguages(item.id, "name", val)}
+                  placeholder="Language"
+                />
+              ) : (
+                item.name
+              )}
+            </span>
 
-        <h2 className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-900">
-          Languages
-        </h2>
-
-        <div className="h-px flex-1 bg-cyan-100" />
-      </div>
-
-      <div className="grid grid-cols-2 gap-x-4 gap-y-3">
-        {languages.map((language) => (
-          <div key={language.id} className="min-w-0">
-            <div className="flex items-center justify-between gap-2">
-              <span className="truncate text-[9px] font-semibold text-slate-700">
-                {language.name}
+            <div className="flex items-center gap-2">
+              <span className="text-[8px] font-medium capitalize text-emerald-700">
+                {isEditable ? (
+                  <EditableText
+                    value={item.proficiency}
+                    onChange={(val) => updateLanguages(item.id, "proficiency", val)}
+                    placeholder="fluent"
+                  />
+                ) : (
+                  item.proficiency
+                )}
               </span>
 
-              <span className="shrink-0 text-[7.5px] capitalize text-slate-400">
-                {language.proficiency}
-              </span>
-            </div>
-
-            <div className="mt-1 h-1 overflow-hidden rounded-full bg-cyan-50">
-              <div
-                className="h-full rounded-full bg-cyan-400"
-                style={{
-                  width:
-                    language.proficiency.toLowerCase() === "native"
-                      ? "100%"
-                      : language.proficiency.toLowerCase() ===
-                          "professional"
-                        ? "80%"
-                        : language.proficiency.toLowerCase() ===
-                            "advanced"
-                          ? "75%"
-                          : language.proficiency.toLowerCase() ===
-                              "intermediate"
-                            ? "60%"
-                            : "40%",
-                }}
-              />
+              {isEditable && languages.length > 1 && (
+                <button
+                  type="button"
+                  onClick={() => removeLanguage(item.id)}
+                  title="Remove Language"
+                  className="opacity-0 group-hover/item:opacity-100 p-0.5 text-neutral-400 hover:text-red-500 transition-opacity"
+                >
+                  <Trash2 className="h-2.5 w-2.5" />
+                </button>
+              )}
             </div>
           </div>
         ))}
       </div>
-    </section>
+    </EditableSectionWrapper>
   );
 }

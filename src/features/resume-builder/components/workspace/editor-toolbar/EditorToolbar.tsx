@@ -32,7 +32,7 @@ export default function EditorToolbar({
   onRearrangeClick,
   onUndo,
   onRedo,
-  canUndo = true,
+  canUndo = false,
   canRedo = false,
 }: EditorToolbarProps) {
   const handleToggle = (panel: ActivePanelType) => {

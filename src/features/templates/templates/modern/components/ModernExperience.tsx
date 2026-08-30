@@ -1,80 +1,177 @@
+"use client";
+
+import { Briefcase, Trash2 } from "lucide-react";
 import type { ResumePreviewData } from "@/types/resume";
-import { ModernTemplateIcons } from "../ModernTemplateIcons";
+import { EditableText } from "@/features/resume-builder/components/workspace/editable/EditableText";
+import EditableSectionWrapper from "@/features/resume-builder/components/workspace/editable/EditableSectionWrapper";
+import { useResumeStore } from "@/features/resume-builder/store/useResumeStore";
 
 interface ModernExperienceProps {
   experience: ResumePreviewData["experience"];
+  isEditable?: boolean;
 }
 
 export default function ModernExperience({
   experience,
+  isEditable = true,
 }: ModernExperienceProps) {
-  const ExperienceIcon = ModernTemplateIcons.experience;
+  const updateExperience = useResumeStore((state) => state.updateExperience);
+  const removeExperience = useResumeStore((state) => state.removeExperience);
+  const accentColor = useResumeStore((state) => state.design.accentColor ?? "#214e3b");
+  const bulletStyle = useResumeStore((state) => state.design.bulletStyle ?? "dot");
+
+  const handleHighlightChange = (
+    expId: string,
+    highlights: string[],
+    indexToUpdate: number,
+    newVal: string
+  ) => {
+    const updated = [...highlights];
+    updated[indexToUpdate] = newVal;
+    updateExperience(expId, "highlights", updated);
+  };
+
+  // Helper to render customized bullet glyph
+  const renderBullet = () => {
+    switch (bulletStyle) {
+      case "diamond":
+        return (
+          <span
+            className="absolute left-0 top-[0.6em] h-1.5 w-1.5 rotate-45"
+            style={{ backgroundColor: accentColor }}
+          />
+        );
+      case "dash":
+        return (
+          <span
+            className="absolute left-0 top-[0.65em] h-[1.5px] w-2 rounded-full"
+            style={{ backgroundColor: accentColor }}
+          />
+        );
+      case "dot":
+      default:
+        return (
+          <span
+            className="absolute left-0 top-[0.6em] h-1.5 w-1.5 rounded-full"
+            style={{ backgroundColor: accentColor }}
+          />
+        );
+    }
+  };
 
   return (
-    <section>
-      <div className="mb-3 flex items-center gap-2.5">
-        <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-cyan-50 text-cyan-600">
-          <ExperienceIcon size={11} strokeWidth={2.2} />
-        </div>
-
-        <h2 className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-900">
-          Experience
-        </h2>
-
-        <div className="h-px flex-1 bg-cyan-100" />
-      </div>
-
-      <div className="space-y-4">
-        {experience.map((item, index) => (
+    <EditableSectionWrapper
+      sectionId="experience"
+      defaultTitle="Experience"
+      icon={<Briefcase className="h-3 w-3" />}
+      isEditable={isEditable}
+      canAddEntry={true}
+    >
+      <div className="space-y-5">
+        {experience.map((item) => (
           <article
             key={item.id}
-            className="relative flex gap-3"
+            className="group/item relative border-l-2 pl-3.5 transition-colors"
+            style={{ borderColor: `${accentColor}30` }}
           >
-            <div className="flex w-5 shrink-0 flex-col items-center">
-              <div className="mt-1 h-2 w-2 rounded-full bg-cyan-500 ring-2 ring-cyan-50" />
+            {/* Timeline Marker */}
+            <span
+              className="absolute -left-[5px] top-1.5 h-2 w-2 rounded-full shadow-2xs"
+              style={{ backgroundColor: accentColor }}
+            />
 
-              {index < experience.length - 1 && (
-                <div className="mt-1 w-px flex-1 bg-cyan-100" />
-              )}
-            </div>
+            {/* Individual Item Deletion */}
+            {isEditable && experience.length > 1 && (
+              <button
+                type="button"
+                onClick={() => removeExperience(item.id)}
+                title="Remove Entry"
+                className="absolute right-0 top-0 opacity-0 group-hover/item:opacity-100 p-1 text-neutral-400 hover:text-red-500 transition-opacity"
+              >
+                <Trash2 className="h-3 w-3" />
+              </button>
+            )}
 
-            <div className="min-w-0 flex-1">
-              <div className="flex items-start justify-between gap-4">
-                <div className="min-w-0">
-                  <h3 className="text-[11px] font-bold leading-snug text-slate-950">
-                    {item.role}
-                  </h3>
+            <div className="flex items-start justify-between gap-4">
+              <div className="min-w-0 flex-1">
+                <h3 className="text-[11.5px] font-bold text-neutral-900 leading-tight">
+                  {isEditable ? (
+                    <EditableText
+                      value={item.role}
+                      onChange={(val) => updateExperience(item.id, "role", val)}
+                      placeholder="Role Title"
+                    />
+                  ) : (
+                    item.role
+                  )}
+                </h3>
 
-                  <p className="mt-0.5 text-[9.5px] font-semibold text-cyan-600">
-                    {item.company}
-                    {item.location && ` · ${item.location}`}
-                  </p>
+                <div
+                  className="mt-0.5 text-[10px] font-semibold"
+                  style={{ color: accentColor }}
+                >
+                  {isEditable ? (
+                    <EditableText
+                      value={item.company}
+                      onChange={(val) => updateExperience(item.id, "company", val)}
+                      placeholder="Company Name"
+                    />
+                  ) : (
+                    item.company
+                  )}
                 </div>
-
-                {item.period && (
-                  <span className="shrink-0 text-[8.5px] font-medium text-slate-400">
-                    {item.period}
-                  </span>
-                )}
               </div>
 
-              {item.highlights?.length > 0 && (
-                <ul className="mt-1.5 space-y-1">
-                  {item.highlights.map((highlight, highlightIndex) => (
-                    <li
-                      key={highlightIndex}
-                      className="relative pl-3 text-[9.5px] leading-[1.55] text-slate-600"
-                    >
-                      <span className="absolute left-0 top-[5px] h-1 w-1 rounded-full bg-cyan-500" />
-                      {highlight}
-                    </li>
-                  ))}
-                </ul>
-              )}
+              <div className="shrink-0 text-right text-[8.5px] text-neutral-500">
+                {isEditable ? (
+                  <EditableText
+                    value={item.period}
+                    onChange={(val) => updateExperience(item.id, "period", val)}
+                    placeholder="2022 - Present"
+                  />
+                ) : (
+                  <div>{item.period}</div>
+                )}
+                {(item.location || isEditable) && (
+                  <div className="text-neutral-400">
+                    {isEditable ? (
+                      <EditableText
+                        value={item.location || ""}
+                        onChange={(val) => updateExperience(item.id, "location", val)}
+                        placeholder="Location"
+                      />
+                    ) : (
+                      item.location
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
+
+            {/* Bullet List */}
+            <ul className="mt-2 space-y-1">
+              {item.highlights.map((highlight, index) => (
+                <li key={index} className="relative pl-3.5 text-[9.5px] leading-relaxed text-neutral-600">
+                  {renderBullet()}
+                  {isEditable ? (
+                    <EditableText
+                      value={highlight}
+                      onChange={(newVal) =>
+                        handleHighlightChange(item.id, item.highlights, index, newVal)
+                      }
+                      placeholder="Bullet point achievement..."
+                      multiline
+                      className="w-full"
+                    />
+                  ) : (
+                    highlight
+                  )}
+                </li>
+              ))}
+            </ul>
           </article>
         ))}
       </div>
-    </section>
+    </EditableSectionWrapper>
   );
 }

@@ -24,7 +24,7 @@ export const TEMPLATE_SHOWCASE_ITEMS: TemplateItem[] = [
     name: "Creative Lead",
     slug: "creative-lead",
     image: "/images/resumes/home/showcase/resume-3.jpg",
-  },
+  }, 
   {
     id: "4",
     name: "Technical Standard",
